@@ -1,4 +1,4 @@
-NAME=risethesis
+NAME=main
 
 default: build
 
