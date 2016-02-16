@@ -668,7 +668,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
   \noindent
-  Tese de doutorado apresentada por \textbf{\@author} ao programa de Pós-Graduação em
+  Dissertação de mestrado apresentada por \textbf{\@author} ao programa de Pós-Graduação em
   Ciência da Computação do Centro de Informática da Universidade Federal de
   Pernambuco, sob o título \textbf{\@title}, orientada pelo \textbf{Prof.
   \@adviser} e aprovada pela banca examinadora formada pelos professores:
