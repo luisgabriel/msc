@@ -9,4 +9,4 @@ build:
 	pdflatex $(NAME).tex
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.toc *.out *.lof *.lot
+	rm -f *.aux *.bbl *.blg *.log *.toc *.out *.lof *.lot */*.aux
