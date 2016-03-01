@@ -24,7 +24,7 @@
             colorlinks,
             pdfpagelabels,
             pdftitle={Rise Thesis Template (ABNT)},
-            pdfauthor={Rise Thesis Template (ABNT)}]{hyperref}
+            pdfauthor={Luís Gabriel Lima}]{hyperref}
 
 \address{RECIFE}
 
@@ -80,20 +80,15 @@ right way, did not become still more complicated.
 \end{epigraph}
 
 \resumo
-% Escreva seu resumo no arquivo resumo.tex
 \input{02.resumo}
 
 \abstract
-% Write your abstract in a file called abstract.tex
 \input{03.abstract}
 
-% List of figures
 \listoffigures
 
-% List of tables
 \listoftables
 
-% List of acronyms
 % Acronyms manual: http://linorg.usp.br/CTAN/macros/latex/contrib/acronym/acronym.pdf
 \listofacronyms
 \input{04.acronyms}
@@ -103,18 +98,17 @@ right way, did not become still more complicated.
 
 \mainmatter
 
-\include{chapters/introduction}
-\include{chapters/background}
-\include{chapters/desenv}
-\include{chapters/conclusion}
-
-% References
+\include{chapters/1.introduction}
+\include{chapters/2.background}
+\include{chapters/3.tools}
+\include{chapters/4.study}
+\include{chapters/5.extension}
+\include{chapters/6.relatedwork}
+\include{chapters/7.conclusion}
 
 \begin{references}
   \bibliography{references}
 \end{references}
-
-% Appendix
 
 \theappendix
 \include{appendix/mapping-study}
