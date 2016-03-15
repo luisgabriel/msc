@@ -6,4 +6,6 @@
 *.out
 *.lof
 *.lot
+*.lol
 main.pdf
+_minted*

@@ -10,12 +10,10 @@
 \usepackage{rotating}
 \usepackage{booktabs}
 \usepackage{pdfpages}
-\usepackage{caption}
+\usepackage[labelfont=bf,font=small,justification=centering]{caption}
 \usepackage{lipsum}
-
-\captionsetup[table]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
-\captionsetup[lstlisting]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
-\captionsetup[figure]{position=bottom,justification=centering,width=.85\textwidth,labelfont=bf,font=small}
+\usepackage{listings}
+\usepackage[newfloat]{minted}
 
 %% Change the following pdf author attribute name to your name.
 \usepackage[linkcolor=black,
@@ -25,6 +23,15 @@
             pdfpagelabels,
             pdftitle={Rise Thesis Template (ABNT)},
             pdfauthor={Luís Gabriel Lima}]{hyperref}
+
+\captionsetup[table]{position=top,width=.85\textwidth}
+\captionsetup[lstlisting]{position=top,width=.85\textwidth}
+\captionsetup[figure]{position=bottom,width=.85\textwidth}
+
+\SetupFloatingEnvironment{listing}{name={\lstlistingname}, fileext=lol}
+
+\setminted[haskell]{linenos=true,frame=lines,framesep=2mm,fontsize=\footnotesize}
+
 
 \address{RECIFE}
 
@@ -88,6 +95,8 @@ right way, did not become still more complicated.
 \listoffigures
 
 \listoftables
+
+\lstlistoflistings
 
 % Acronyms manual: http://linorg.usp.br/CTAN/macros/latex/contrib/acronym/acronym.pdf
 \listofacronyms

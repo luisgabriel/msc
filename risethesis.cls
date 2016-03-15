@@ -104,6 +104,7 @@
 \RequirePackage{enumitem}
 \RequirePackage{natbib}
 \RequirePackage{lastpage}
+\RequirePackage{listings}
 
 \if\@scr0
   \RequirePackage{graphicx}
@@ -185,8 +186,10 @@
   \renewcommand{\bibname}{\bibliographytocname}
   \renewcommand{\appendixtocname}{Apêndice}
   \renewcommand{\appendixpagename}{Apêndice}
+  \renewcommand{\lstlistingname}{Código}
   \gdef\@listoftablesname{Lista de Tabelas}
   \gdef\@listoffiguresname{Lista de Figuras}
+  \gdef\@lstlistoflistingname{Lista de {\lstlistingname}s}
   \gdef\@pagename{página}
   \gdef\@listacronymname{Acrônimos}
   \gdef\@colophontext{%
@@ -230,6 +233,8 @@
   \gdef\@tocname{Contents}
   \gdef\@listoftablesname{List of Tables}
   \gdef\@listoffiguresname{List of Figures}
+  \renewcommand{\lstlistingname}{Code}
+  \gdef\@lstlistoflistingname{List of {\lstlistingname}s}
   \renewcommand{\appendixtocname}{Appendix}
   \renewcommand{\appendixpagename}{Appendix}
   \newcommand\bibliographytocname{References}
@@ -852,6 +857,12 @@ requirements for the degree of \@degree\ in \@majorfielden.
    \chapter*{\@listoftablesname}
    \thispagestyle{empty}
    \@starttoc{lot}}
+
+\renewcommand\lstlistoflistings{%
+   \pagestyle{empty}
+   \chapter*{\@lstlistoflistingname}
+   \thispagestyle{empty}
+   \@starttoc{lol}}
 
 \newcommand{\listofacronyms}{%
    \pagestyle{empty}

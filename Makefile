@@ -1,12 +1,14 @@
 NAME=main
 
+LATEX_FLAGS=-shell-escape
+
 default: build
 
 build:
-	pdflatex $(NAME).tex
+	pdflatex $(LATEX_FLAGS) $(NAME).tex
 	bibtex $(NAME)
-	pdflatex $(NAME).tex
-	pdflatex $(NAME).tex
+	pdflatex $(LATEX_FLAGS) $(NAME).tex
+	pdflatex $(LATEX_FLAGS) $(NAME).tex
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.toc *.out *.lof *.lot */*.aux
