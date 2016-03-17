@@ -77,8 +77,31 @@ class Monad m where
   \label{code:monad}
 \end{listing}
 
-There are two particular monads that are important for this work: \texttt{IO} and \texttt{STM}. The first one defines an environment to execute input/output operations. The second defines an environment for Software Transactional Memory and will be presented in Section \ref{sec:haskell-conc}.
+There are two particular monads that are important for this work: \texttt{IO} and \texttt{STM}. The first one defines an environment to execute input/output operations. The second defines an environment for Software Transactional Memory and will be presented in Section \ref{sec:haskell-conc}. In Code \ref{code:io} we have an example of the use of \texttt{Monad} operators to perform I/O. For instance, the functions \texttt{putStrLn} and \texttt{getLine} from the module \texttt{System.IO} prints and reads a \texttt{String} from the standard I/O, respectively. The result type of \texttt{main} is \texttt{IO ()}, where \texttt{()} is an empty tuple value. It represents that no value is returned, analogous to the type \texttt{void} on imperative languages.
 
+\begin{listing}
+  \begin{minted}{haskell}
+main :: IO ()
+main = putStrLn "What is your name?" >> getLine
+       >>= \name -> putStrLn ("Hey " ++ name ++ ", you rock!")
+  \end{minted}
+  \caption{An example using the Monad operators for the IO type}
+  \label{code:io}
+\end{listing}
+
+\begin{listing}
+  \begin{minted}{haskell}
+main :: IO ()
+main = do
+  putStrLn "What is your name?"
+  name <- getLine
+  putStrLn ("Hey " ++ name ++ ", you rock!")
+  \end{minted}
+  \caption{An example using the do notation}
+  \label{code:io-do}
+\end{listing}
+
+Finally, there is a notation in Haskell that makes it easier to express operation within a monad, the \emph{do-notation}. Code \ref{code:io-do} shows the same example of Code \ref{code:io} rewritten using do-notation. Using \texttt{do}, a series of monadic function calls is sequenced as if in an imperative program. It works mainly as syntactic sugar for \texttt{(>==)} and \texttt{(>>)} calls, binding variables that later become argument of other functions and mainly sequentially composing the calls.
 
 
 \section{Concurrency}
