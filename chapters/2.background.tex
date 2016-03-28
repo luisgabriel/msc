@@ -123,7 +123,19 @@ It is important to note that there is a fundamental difference between the two a
 
 
 \section{Concurrency in Haskell}\label{sec:haskell-conc}
-\lipsum[1-4]
+The main component of the Haskell programming language ecosystem is the \ac{ghc}~\citep{smpj:1993}. \acs{ghc} provides a complete infrastructure for building, running, debugging and profiling Haskel programs. It's composed by two core pieces. The compiler itself, which translate source language into assembly code executable by a native host. And the runtime system, which is a support library for primitive language services such as memory management and IO. Concurrency in Haskell is supported by the infrastructure that is provided by the \ac{rts}~\citep{li:2007}.
+
+% [[ HEC/Capabilities, green threads, the scheduler and work-stealing ]]
+
+% [[ diagram showing layers of RTS ]]
+% green threads > hec > os threads > process > OS > physical processor
+
+% [[ forkIO, forkOn, and forkOS]]
+%There are several abstractions for concurrent programming in Haskell. The original framework for concurrency in Haskell is called \emph{Concurrent Haskell}~\citep{smpj:1996}.
+
+% [[ MVar ]]
+
+% [[ STM + TVar + TMVar]]
 
 
 \section{Software Energy Consumption}
