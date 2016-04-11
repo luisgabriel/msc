@@ -123,9 +123,14 @@ It is important to note that there is a fundamental difference between the two a
 
 
 \section{Concurrency in Haskell}\label{sec:haskell-conc}
-The main component of the Haskell programming language ecosystem is the \ac{ghc}~\citep{smpj:1993}. \acs{ghc} provides a complete infrastructure for building, running, debugging and profiling Haskell programs. It's composed by two core pieces. The compiler itself, which translate source language into assembly code executable by a native host. And the runtime system, which is a support library for primitive language services such as memory management and IO. Concurrency in Haskell is supported by the infrastructure that is provided by the \ac{rts}~\citep{li:2007}.
+The main component of the Haskell ecosystem is the \ac{ghc}~\citep{smpj:1993}. \acs{ghc} provides a complete infrastructure for building, running, debugging and profiling Haskell programs. It's composed by two core pieces. The compiler itself, which translate source language into assembly code executable by a native host. And the runtime system, which is a support library for primitive language services such as memory management and IO. Concurrency in Haskell is supported by the infrastructure that is part of \ac{rts}~\citep{li:2007}.
 
-\emph{Haskell threads} (also known as \emph{green threads}) are the main abstraction for concurrent programming in Haskell. These Haskell threads are multiplexed over a much smaller number of operating system threads. The \acl{rts} takes care of scheduling green threads to execute on a set of virtual processors. They are also known as \acp{hec} or \emph{capabilities}. A capability is able to run one Haskell thread at a time. Each capability also has a run queue for keeping the Haskell threads that will run next. Figure \ref{fig:haskell-conc-layers} shows the various layers involved in a concurrent system written in Haskell.
+\emph{Haskell threads} (also known as \emph{green threads}) are the main abstraction for concurrent programming in Haskell. These are special threads managed by the \acl{rts}. They are multiplexed over a much smaller number of operating system threads. The \ac{rts} takes care of scheduling green threads to execute on a set of \emph{virtual processors}. These virtual processors are also known as \acp{hec} or \emph{capabilities}. A capability is able to run one Haskell thread at a time. Each capability also has a run queue for keeping the Haskell threads that will run next.
+
+% - a capability is animated by one or more operating system threads.
+% --- say that each HEC can have more than one OS thread?
+% - number of capabilities is equal to the number of Haskell threads that can run physically in parallel
+The runtime system uses a round-robin scheduling policy to manage the capabilities' run queue. So, each thread in the queue runs for a time slice~\footnote{The default rescheduling time is 20ms. The developer can change it by passing a different value to the \ac{rts} via the \texttt{-i} command line argument} before being interrupted to the next one to run. The scheduler also performs load-balancing of Haskell threads. It moves threads from a capability's run queue to another to avoid CPU idle time~\footnote{The strategy used to move work from one capability to another is currently fixed, but there are some work towards making this policy customizable~\citep{siva:2014}}. These characteristics makes Haskell threads considerably more lightweight than regular OS threads. The GHC documentation states that: \emph{"Typically Haskell threads are an order of magnitude or two more efficient (in terms of both time and space) than operating system threads"}~\footnote{http://hackage.haskell.org/package/base-4.8.2.0/docs/Control-Concurrent.html\#g:11}. Another advantage of Haskell threads is the low context-switching overhead when comparing to OS threads. This is crutial for some systems with a high performance requirement such as web servers~\citep{voellmy:2013}.
 
 \begin{figure}[htp]
   \centering
@@ -135,15 +140,7 @@ The main component of the Haskell programming language ecosystem is the \ac{ghc}
   \label{fig:haskell-conc-layers}
 \end{figure}
 
-In this particular example, the underlying machine has two cores. And for these reason, there are two \acp{hec} associated with two OS threads. Although depicted this way, a developer can configure it differently. For instance, the number of capabilities can be determined when executing the program by passing a command line argument for the \acp{rts} (in this case, \texttt{-N}). Also, it's important to note that a program in Haskell can be linked with either threaded \acp{rts} or non-threaded \acp{rts}. To leverage multicore processors (as in this example), the program should be linked to the threaded runtime~\footnote{This can be achieved by passing \texttt{-threaded} to \acp{ghc} when compiling the program}.
-
-An advantage of green threads over regular OS threads is the fact that they have low context-switching overhead. This is crutial for some systems with a high performance requirement such as web servers~\citep{voellmy:2013}. %scheduler + load-balancing + work-stealing
-
-% !! What about put the layers image after the first paragraph and start talking about the RTS bottom-up with the current third paragraph? !!
-
-%A capability is animated by one or more operating system threads.
-
-% that the number of capabilities is equal to the number of Haskell threads that can run physically in parallel
+\figref{fig:haskell-conc-layers} shows the various layers involved in a concurrent system written in Haskell. In this example, the underlying machine has two cores. And for these reason, there are two \acp{hec} associated with two OS threads. Although depicted this way, a developer can configure it differently. For instance, the number of capabilities can be set when the program is executed  by passing a command line argument for the \ac{rts} (in this case, \texttt{-N}). Also, it's important to note that a program in Haskell can be linked with either threaded \ac{rts} or non-threaded \ac{rts}. To leverage multicore processors (as in this example), the program should be linked to the threaded runtime~\footnote{This can be achieved by passing \texttt{-threaded} to \ac{ghc} when compiling the program}.
 
 
 % [[ forkIO, forkOn, and forkOS]]
