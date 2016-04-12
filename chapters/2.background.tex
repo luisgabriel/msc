@@ -142,9 +142,17 @@ The runtime system has an internal scheduler to manage the green threads. It use
 
 In \figref{fig:haskell-conc-layers}, we show the various layers involved in a concurrent system written in Haskell. In this example, the underlying machine has two cores. For this reason, there are two \acp{hec} associated with two OS threads. Although depicted this way, a developer can configure it differently. For instance, the number of capabilities can be set when the program is executed  by passing a command line argument for the \ac{rts} (in this case, \texttt{-N}). Also, it is important to note that a program in Haskell can be linked with either threaded \ac{rts} or non-threaded \ac{rts}. The program should be linked to the threaded runtime to leverage multicore processors (as in \figref{fig:haskell-conc-layers}).\footnote{This can be achieved by passing \texttt{-threaded} to \ac{ghc} when compiling the program}
 
+From a more higher-level perspective, the original framework for concurrency in Haskell is called \emph{Concurrent Haskell}~\citep{smpj:1996}. It represents a thread as a computation in the IO monad. We have three main functions to create a new thread in Haskell as \autoref{code:fork-sig} shows. \forkIO creates a Haskell thread. It receives an IO computation and returns a pointer to the thread. \forkOn also creates a Haskell thread but lets the developer specify on which capability the thread should run. Unlike threads created with \forkIO, the scheduler cannot migrate threads created with \forkOn from one capability to another. For instance, if a program creates all its threads using \forkOn, the scheduler will not be able to perform load-balancing. Finally, \forkOS creates a \emph{bound thread}. A bound thread is a Haskell thread that is bound to an specific OS thread. They are treated by the scheduler the same way as other Haskell threads. The only difference is when it is time to run a bound thread. The capability has to run in on its bound OS thread. \figref{fig:haskell-threads} shows the difference between each thread creation function.
 
-% [[ forkIO, forkOn, and forkOS]]
-%There are several abstractions for concurrent programming in Haskell. The original framework for concurrency in Haskell is called \emph{Concurrent Haskell}~\citep{smpj:1996}.
+\begin{listing}
+  \caption{Type signature of the thread creation functions}
+  \begin{minted}{haskell}
+forkIO :: IO () -> IO ThreadId
+forkOn :: Int -> IO () -> IO ThreadId
+forkOS :: IO () -> IO ThreadId
+  \end{minted}
+  \label{code:fork-sig}
+\end{listing}
 
 % [[ MVar ]]
 
