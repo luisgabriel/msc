@@ -165,18 +165,20 @@ From a more higher-level perspective, the original framework for concurrency in 
 The basic concurrency control primitive of Haskell is the \MVar. A value of type \MVar~\texttt{t} is a mutable location that is either empty or contains a value of type \texttt{t}. \autoref{code:mvar-sig} shows the \acs{api} for manipulating an \MVar. The more commonly used functions are \newMVar, \newEmptyMVar, \takeMVar and \putMVar. The first one creates an \MVar with a value inside. The second creates an empty \MVar. The \takeMVar function takes a value from an \MVar, returning it in the IO monad. The operation returns immediatly if the \MVar is full. For empty ones it will block until they are filled. The opposite applies to \putMVar. The function puts a value in an \MVar. It will return immediatly if the \MVar is empty. Otherwise, the function will block until the \MVar is emptied. An \MVar combine both locking and condition-based synchronization in a single primitive. It also has a formally defined semantics~\citep{smpj:1996}.
 
 \begin{listing}
-  \caption{Type signatures for \MVar functions}
+  \caption{The \MVar interface}
   \begin{minted}{haskell}
+-- Type definition
+data MVar a
+
+-- MVar manipulation
 takeMVar     :: MVar a -> IO a
 putMVar      :: MVar a -> a -> IO ()
 tryTakeMVar  :: MVar a -> IO (Maybe a)
 tryPutMVar   :: MVar a -> a -> IO Bool
 isEmptyMVar  :: MVar a -> IO Bool
-readMVar     :: MVar a -> IO a
 swapMVar     :: MVar a -> a -> IO a
-withMVar     :: MVar a -> (a -> IO b) -> IO b
-modifyMVar_  :: MVar a -> (a -> IO a) -> IO ()
-modifyMVar   :: MVar a -> (a -> IO (a, b)) -> IO b
+
+-- MVar creation
 newMVar      :: a -> IO (MVar a)
 newEmptyMVar :: IO (MVar a)
   \end{minted}
