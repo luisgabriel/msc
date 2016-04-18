@@ -185,7 +185,41 @@ newEmptyMVar :: IO (MVar a)
   \label{code:mvar-sig}
 \end{listing}
 
-% [[ STM + TVar + TMVar]]
+In Haskell, we can also use software transactional memory to coordinate concurrency. Its implementation is called \acs{stm} Haskell~\citep{harris:2005}. \autoref{code:stm-api} shows the API for \acs{stm} in Haskell.
+% [[ TVar + STM monad ]]
+
+\begin{listing}
+  \caption{The \STM interface}
+  \begin{minted}{haskell}
+-- The STM monad
+data STM a
+instance Monad STM -- support "do" notation and sequencing
+
+-- Transactional variable
+data TVar a
+newTVar         :: a -> STM (TVar a)
+readTVar        :: TVar a -> STM a
+writeTVar       :: TVar a -> a -> STM ()
+
+-- Transactional MVar
+data TMVar a
+newTMVar        :: a -> STM (TMVar a)
+takeTMVar       :: TMVar a -> STM a
+putTMVar        :: TMVar a -> a -> STM ()
+tryTakeTMVar    :: TMVar a -> STM (Maybe a)
+tryPutTMVar     :: TMVar a -> a -> STM Bool
+
+-- Running STM computations
+atomically      :: STM a -> IO a
+retry           :: STM a
+orElse          :: STM a -> STM a -> STM a
+  \end{minted}
+  \label{code:stm-api}
+\end{listing}
+
+% [[ TMVar ]]
+
+% [[ Composability + retry + orElse]]
 
 
 \section{Software Energy Consumption}
