@@ -143,7 +143,7 @@ The runtime system has an internal scheduler to manage the green threads. It use
 In \figref{fig:haskell-conc-layers}, we show the various layers involved in a concurrent system written in Haskell. In this example, the underlying machine has two cores. For this reason, there are two \acp{hec} associated with two OS threads. Although depicted this way, a developer can configure it differently. For instance, the number of capabilities can be set when the program is executed  by passing a command line argument for the \ac{rts} (in this case, \texttt{-N}). Also, it is important to note that a program in Haskell can be linked with either threaded \ac{rts} or non-threaded \ac{rts}. The program should be linked to the threaded runtime to leverage multicore processors (as in \figref{fig:haskell-conc-layers}).\footnote{This can be achieved by passing \texttt{-threaded} to \ac{ghc} when compiling the program}
 
 \begin{listing}
-  \caption{Type signatures for thread creation functions}
+  \caption{The thread creation interface}
   \begin{minted}{haskell}
 forkIO :: IO () -> IO ThreadId
 forkOn :: Int -> IO () -> IO ThreadId
