@@ -184,8 +184,7 @@ newEmptyMVar :: IO (MVar a)
   \label{code:mvar-api}
 \end{listing}
 
-In Haskell, we can also use software transactional memory to coordinate concurrency. Its implementation is called \acs{stm} Haskell~\citep{harris:2005}. \autoref{code:stm-api} shows the API for \acs{stm} in Haskell.
-% [[ TVar + STM monad ]]
+In Haskell, we can also use software transactional memory to coordinate concurrency. Its implementation is called \acs{stm} Haskell~\citep{harris:2005}. \autoref{code:stm-api} shows the \acs{api} for \acs{stm} in Haskell. The transactional variable, or \TVar, is the main abstraction of this framework. A \TVar~\texttt{t} is a mutable location that holds a value of type \texttt{t}. Reads and writes to a \TVar can only be accomplished inside the \STM monad. To execute an \STM monad we have to use the \atomically function. This function runs an \STM monad as a transaction, which makes a sequence of operations to take place atomically with respect to the rest of the program. The \atomically function also acts as a bridge between the \IO and \STM monads, which allows \STM operations to be executed by threads. It is important to note that, as \STM and \IO are different monads, the Haskell's type system does not allow manipulating a \TVar outside a transaction, nor it allows performing an IO operation inside a transaction. This is an important property that is hard to ensure on other \STM implementations.
 
 \begin{listing}
   \caption{The \STM interface}
@@ -216,6 +215,8 @@ orElse          :: STM a -> STM a -> STM a
   \label{code:stm-api}
 \end{listing}
 
-% [[ TMVar ]]
+In concurrent programming, it is crucial to be able to \emph{block} when we need to wait for some condition to be true. We can achieve this behavior in \acs{stm} Haskell using the \retry function. When \retry is called, the \atomically block will immediately terminate. It makes the transaction restart from scratch, with any previous modifications unperformed. The Haskell implementation is also smart enough not to restart the transaction immediately. It will do it only when one or more of the variables involved in the transaction changes. This makes possible to block on arbitrary conditions the execution of a thread.
 
-% [[ Composability + retry + orElse]]
+Having \emph{blocking} semantics also enables the creation other types such as \TMVar. As the name implies, it works as a transactional variant of \MVar. It blocks when the \TMVar is full and we try to put a new value on it, or when the \TMVar is empty and we try to take a value from it. However, it blocks using \retry, which aborts the transaction it is in and makes it restart from the beginning. This makes the order in which the threads are woken up by the scheduler to differ between \MVar and \TMVar. \MVar functions are guaranteed to be woken up one at a time while \TMVar functions follow the retry semantics. So, while {\MVar}s are guaranteed to be fair, {\TMVar}s have no such guarantees.
+
+As we can see, Haskell has a robust set of constructs and primitives for allowing concurrent programming. There are several ways we can write an application to achieve a specific goal. Throughout this work, we will study how the choices we make for expressing concurrency in our Haskell programs impacts performance.
