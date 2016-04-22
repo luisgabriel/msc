@@ -2,27 +2,28 @@
 In this chapter, we review and introduce some essential concepts used in this work. First, we give a short introduction to the Haskell Programming Language in Section~\ref{sec:haskell}. Later, we briefly describe the fundamentals of concurrency in Section~\ref{sec:conc}. Finally, we present the primitives and constructors for concurrent programming in Haskell in Section~\ref{sec:haskell-conc}.
 
 \section{Haskell}\label{sec:haskell}
-Haskell is a \emph{purely functional} programming language. By functional, we mean that functions are the building blocks of programs written in Haskell. By pure, we mean that no side-effect happens when evaluating a function. While in imperative programming languages, a program is expressed as a sequence of instructions that mutates data, a program in functional programming languages is expressed as a composition of expressions where all state is controlled by passing arguments to function calls and returning values from them. This property is called \emph{referential transparency}. It guarantees that in a given execution context, a function executed with a given argument will always produce the same result. This property makes it easier to reason about programming as it enforces that a program's behavior cannot depend on history.
+Haskell is a \emph{purely functional} programming language. Being functional means that functions are the building blocks of programs written in this language. Being pure means that no side-effect happens when evaluating a function. These two characteristics together make Haskell fundamentally different from imperative programming languages. In imperative programming languages, a program is expressed as a sequence of instructions that mutates data. In Haskell, a program is expressed as a composition of expressions where all state is controlled by passing arguments to function calls and returning values from them. Also, having no side-effect guarantees that, in a given execution context, a function executed with a given argument will always produce the same result. This property is known as \emph{referential transparency}. It enforces that a program's behavior cannot depend on history, which improves reasonability.
 
-Haskell is also a \emph{lazy} programming language. Lazy refers to a non-strict evaluation strategy also known as \emph{call-by-need}. This strategy delays the evaluation of an expression until its value is needed. It avoids repeated evaluations which can lead to performance improvements. This strategy also makes it possible to construct potentially infinite data structures.
+Haskell is also a \emph{lazy} programming language. Lazy refers to a non-strict evaluation strategy also known as \emph{call-by-need}. This strategy delays the evaluation of an expression until its value is needed. It avoids repeated evaluations, which can lead to performance improvements. This strategy also makes it possible to construct potentially infinite data structures.
 
-\emph{Recursion} is the norm in a purely functional programming language as regular iterative loops require state mutation. To make it easier to express recursive functions, Haskell also has \emph{pattern matching}. In Code \ref{code:fact}, we can see an example of a recursive function using pattern matching. Line 1 is the base case, when the \texttt{factorial} receives zero as parameter, and Line 2 is the general case.
+Regarding programming style, \emph{recursion} is the norm in Haskell since regular iterative loops require state mutation. To make it easier to express recursive functions, Haskell also has \emph{pattern matching}. In \autoref{code:fact}, we can see an example of a recursive function using pattern matching. Line 1 is the base case, when the \texttt{factorial} receives zero as parameter, and Line 2 is the general case.
 
 \begin{listing}
+  \caption{A recursive factorial function}
   \begin{minted}{haskell}
 factorial :: Int -> Int
 factorial 0 = 1
 factorial x = x * factorial (x - 1)
   \end{minted}
-  \caption{A recursive factorial function}
   \label{code:fact}
 \end{listing}
 
 Another characteristic of Haskell is that functions are values. It means that a function can receive other functions as argument, and also can be the result of a function evaluation. This feature is known as \emph{high-order functions}. It enables very popular functional patterns such as \texttt{map}, \texttt{filter} and \texttt{reduce}.
 
-Functions in Haskell can also be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. Code \ref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type}~\citep{cardelli:1985} used to bind the input type to the output type of \texttt{reverse}.
+Functions in Haskell can also be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. \autoref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type}~\citep{cardelli:1985} used to bind the input type to the output type of \texttt{reverse}. It reads: \texttt{reverse} receives a list of any type and return a list of the same type as the input.
 
 \begin{listing}
+  \caption{A polymorphic function to reverse a list}
   \begin{minted}{haskell}
 reverse :: [t] -> [t]
 reverse l = rev l []
@@ -30,13 +31,13 @@ reverse l = rev l []
     rev []     a = a
     rev (x:xs) a = rev xs (x:a)
   \end{minted}
-  \caption{A polymorphic function to reverse a list}
   \label{code:poly}
 \end{listing}
 
-In Haskell, a developer can also extend the built-in primitive types by defining new \emph{abstract data types}. Code \ref{code:tree} shows an example defining the \texttt{Tree} data type and the function \texttt{depth} to calculate the depth of the tree. As this example shows, the parametric polymorphism also works for abstract data types. Here, \texttt{Tree} have two constructors \texttt{Node} and \texttt{Empty}, where the first one holds three elements: the value of the node, the, left and right sub-trees. Pattern matching can be used to walk through a \texttt{Tree} as shown in Lines 5 and 6.
+In Haskell, a developer can also extend the built-in primitive types by defining new \emph{abstract data types}. \autoref{code:tree} shows an example defining the \Tree data type and the function \texttt{depth} to calculate the depth of the tree. As this example shows, the parametric polymorphism also works for abstract data types. Here, \Tree have two constructors \texttt{Node} and \texttt{Empty}, where the first one holds three elements: the value of the node, the, left and right sub-trees. Pattern matching can be used to walk through a \Tree as shown in Lines 5 and 6.
 
 \begin{listing}
+  \caption{A data type for binary tree and a function to calculate its depth}
   \begin{minted}{haskell}
 data Tree t = Node t (Tree t) (Tree t)
             | Empty
@@ -45,13 +46,13 @@ depth :: Tree t -> Int
 depth Empty        = 0
 depth (Node _ l r) = 1 + max (depth l) (depth r)
   \end{minted}
-  \caption{A data type for binary tree and a function to calculate its depth}
   \label{code:tree}
 \end{listing}
 
-There is also a concept called \emph{typeclasses} that enhances the definition of new types in Haskell. A typeclass is similar to an interface. It defines a set of functions that can be applied to a particular type. Typeclasses were designed as a way for implementing ad hoc polymorphism in Haskell. Code \ref{code:tree-eq} shows an example of instantiation of the \texttt{Eq} typeclass for the \texttt{Tree} type we defined earlier. It states that a \texttt{Tree} is comparable for equality if its contained type is also comparable for equality.
+There is also a concept called \emph{typeclasses} that enhances the definition of new types in Haskell. A typeclass is similar to an interface. It defines a set of functions that can be applied to a particular type. Typeclasses were designed as a way for implementing ad hoc polymorphism in Haskell. \autoref{code:tree-eq} shows an example of instantiation of the \Eq typeclass for the \Tree type we defined earlier. It states that a \Tree is comparable for equality if its contained type is also comparable for equality.
 
 \begin{listing}
+  \caption{Definition of an \Eq typeclass instance for the \Tree data type}
   \begin{minted}{haskell}
 instance Eq a => Eq (Tree a) where
   (==) Empty Empty = True
@@ -59,13 +60,13 @@ instance Eq a => Eq (Tree a) where
   (==) (Node _ _ _) Empty = False
   (==) (Node x xl xr) (Node y yl yr) = (x == y) && (xl == yl) && (xr == yr)
   \end{minted}
-  \caption{Definition of an Eq typeclass instance for the Tree data type}
   \label{code:tree-eq}
 \end{listing}
 
-The \texttt{Monad} typeclass is particularly important for Haskell because it allow developers to emulate mutable behavior and side-effects in a purely functional manner. Its definition can be seen in Code \ref{code:monad}. The most important functions of this interface are \texttt{(>==)}, also known as \emph{bind}, and \texttt{return}, also called \emph{unit}. The first one binds the contained value of the monad \texttt{m} to the argument of its argument function, and the second wraps a value in the monad \texttt{m} and returns it. It is a common idiom to call a \emph{monad} any type that is an instance of class \texttt{Monad}.
+The \Monad typeclass is particularly important for Haskell because it allow developers to emulate mutable behavior and side-effects in a purely functional manner. Its definition can be seen in \autoref{code:monad}. The most important functions of this interface are \texttt{(>==)}, also known as \emph{bind}, and \texttt{return}, also called \emph{unit}. The first one binds the contained value of the monad \texttt{m} to the argument of its argument function. The second one wraps a value in the monad \texttt{m} and returns it. It is a common idiom to call a \emph{monad} any type that is an instance of class \Monad.
 
 \begin{listing}
+  \caption{Definition of type class \Monad}
   \begin{minted}{haskell}
 class Monad m where
   (>>=)  :: m a -> (a -> m b) -> m b
@@ -73,35 +74,30 @@ class Monad m where
   return :: a -> m a
   fail   :: String -> m a
   \end{minted}
-  \caption{Definition of type class Monad}
   \label{code:monad}
 \end{listing}
 
-Two monads are particularly important for this work: \texttt{IO} and \texttt{STM}. The first one defines an environment to execute input/output operations. The second defines an environment for Software Transactional Memory, which is presented in Section \ref{sec:haskell-conc}. In Code \ref{code:io}, we have an example of the use of \texttt{Monad} operators to perform I/O. For instance, the functions \texttt{putStrLn} and \texttt{getLine} from the module \texttt{System.IO} prints and reads a \texttt{String} from the standard I/O, respectively. The result type of \texttt{main} is \texttt{IO ()}, where \texttt{()} is an empty tuple value. It represents that no value is returned, analogous to the type \texttt{void} on imperative languages.
+Two monads are particularly important for this work: \IO and \STM. The first one defines an environment to execute input/output operations. The second defines an environment for \acl{stm}, which is presented in Section \ref{sec:haskell-conc}. In \autoref{code:io}, we have a basic example of how to perform I/O in Haskell. For instance, the functions \texttt{putStrLn} and \texttt{getLine} from the module \texttt{System.IO} prints and reads a \texttt{String} from the standard I/O, respectively. The result type of \texttt{main} is \texttt{IO ()}, where \texttt{()} is an empty tuple value. It represents that no value is returned, analogous to the type \texttt{void} on imperative languages.
 
 \begin{listing}
+  \caption{Basic \IO example}
   \begin{minted}{haskell}
+-- Using Monad operators
 main :: IO ()
 main = putStrLn "What is your name?" >> getLine
        >>= \name -> putStrLn ("Hey " ++ name ++ ", you rock!")
-  \end{minted}
-  \caption{An example using the Monad operators for the IO type}
-  \label{code:io}
-\end{listing}
 
-\begin{listing}
-  \begin{minted}{haskell}
+-- Using do-notation
 main :: IO ()
 main = do
   putStrLn "What is your name?"
   name <- getLine
   putStrLn ("Hey " ++ name ++ ", you rock!")
   \end{minted}
-  \caption{An example using the do notation}
-  \label{code:io-do}
+  \label{code:io}
 \end{listing}
 
-Finally, there is a notation in Haskell that makes it easier to express operation within a monad, the \emph{do-notation}. Code \ref{code:io-do} shows the same example of Code \ref{code:io} rewritten using do-notation. Using \texttt{do}, a series of monadic function calls is sequenced as if in an imperative program. It works mainly as syntactic sugar for \texttt{(>==)} and \texttt{(>>)} calls, binding variables that later become argument of other functions and mainly sequentially composing the calls.
+Finally, as you can see in \autoref{code:io}, there is a notation in Haskell that makes it easier to express operation within a monad, the \emph{do-notation}. Using \texttt{do}, a series of monadic function calls is sequenced as if in an imperative program. It works mainly as syntactic sugar for \texttt{(>==)} and \texttt{(>>)} calls, binding variables that later become argument of other functions and mainly sequentially composing the calls.
 
 
 \section{Concurrency}\label{sec:conc}
