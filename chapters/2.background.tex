@@ -18,9 +18,7 @@ factorial x = x * factorial (x - 1)
   \label{code:fact}
 \end{listing}
 
-Another characteristic of Haskell is that functions are values. It means that a function can receive other functions as argument, and also can be the result of a function evaluation. This feature is known as \emph{high-order functions}. It enables very popular functional patterns such as \texttt{map}, \texttt{filter} and \texttt{reduce}.
-
-Functions in Haskell can also be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. \autoref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type}~\citep{cardelli:1985} used to bind the input type to the output type of \texttt{reverse}. It reads: \texttt{reverse} receives a list of any type and return a list of the same type as the input.
+Functions in Haskell can be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. \autoref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type}~\citep{cardelli:1985} used to bind the input type to the output type of \texttt{reverse}. It reads: \texttt{reverse} receives a list of any type and return a list of the same type as the input.
 
 \begin{listing}
   \caption{A polymorphic function to reverse a list}
@@ -32,6 +30,18 @@ reverse l = rev l []
     rev (x:xs) a = rev xs (x:a)
   \end{minted}
   \label{code:poly}
+\end{listing}
+
+Another characteristic of Haskell is that functions are values. This means that a function can receive other functions as argument, and also can be the result of a function evaluation. This feature is known as \emph{high-order functions}. It enables very popular functional patterns such as \texttt{map}, \texttt{filter} and \texttt{reduce}. In \autoref{code:map}, we can see \texttt{map} implemented in Haskell. It returns the list obtained by applying the provided function to each element of the input list.
+
+\begin{listing}
+  \caption{The \texttt{map} function}
+  \begin{minted}{haskell}
+map :: (a -> b) -> [a] -> [b]
+map _ []     = []
+map f (x:xs) = f x : map f xs
+  \end{minted}
+  \label{code:map}
 \end{listing}
 
 In Haskell, a developer can also extend the built-in primitive types by defining new \emph{abstract data types}. \autoref{code:tree} shows an example defining the \Tree data type and the function \texttt{depth} to calculate the depth of the tree. As this example shows, the parametric polymorphism also works for abstract data types. Here, \Tree have two constructors \texttt{Node} and \texttt{Empty}, where the first one holds three elements: the value of the node, the, left and right sub-trees. Pattern matching can be used to walk through a \Tree as shown in Lines 5 and 6.
