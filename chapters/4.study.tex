@@ -1,5 +1,5 @@
 \chapter{The Energy Efficiency of Concurrent Haskell}
-In this chapter, we present an empirical study evaluating the performance and energy consumption characteristics of three thread management constructs and three data-sharing primitives. We start by providing a brief overview of the problem (\secref{sec:overview}). \secref{sec:setup} describes the benchmark we developed, the environment we used and the methodology. \secref{sec:results} provides our results. \secref{sec:discussion} presents a discussion about our results. Finally, \secref{sec:threats} list the threats to validity.
+In this chapter, we present an empirical study evaluating the performance and energy consumption characteristics of three thread management constructs and three data-sharing primitives of Concurrent Haskell. We start by providing a brief overview of the problem (\secref{sec:overview}). \secref{sec:setup} describes the benchmark we developed, the environment we used and the methodology. \secref{sec:results} provides our results. \secref{sec:discussion} presents a discussion about our results. Finally, \secref{sec:threats} list the threats to validity.
 
 \section{Overview}\label{sec:overview}
 %% Give more context before presenting the research questions
@@ -14,52 +14,30 @@ This study is motivated by the following research questions:
 
 
 \section{Study Setup}\label{sec:setup}
-\lipsum[1-1]
+In this section we describe the benchmarks that we analyzed, the infrastructure and the methodology that we used to perform the experiments.
 
 \subsection{Benchmarks}
-We selected a variety of concurrent Haskell programs to use as benchmarks in our study. Benchmarks \chameneos, \fasta, \knucleotide, \mandelbrot, \regex, and \spectral are from The Computer Language Benchmarks Game\footnote{http://benchmarksgame.alioth.debian.org/} (CLBG). CLBG is a benchmark suite aiming to compare the performance of various programming languages. Benchmark \dining is from  Rosetta Code \footnote{http://rosettacode.org/}, a code repository of solutions to common programming tasks. Benchmarks \tsearch and \warp were developed by us. Table~\ref{tab:benchmarks} presents descriptions for all the benchmarks.
+We selected a variety of concurrent Haskell programs to use as benchmarks in our study, listed as follows. Benchmarks \ref{bench:chameneos}-\ref{bench:spectral} are from \ac{clbg}\footnote{http://benchmarksgame.alioth.debian.org/}. \acs{clbg} is a benchmark suite aiming to compare the performance of various programming languages. Benchmark \ref{bench:dining} is from  Rosetta Code \footnote{http://rosettacode.org/}, a code repository of solutions to common programming tasks. Benchmarks \ref{bench:tsearch}-\ref{bench:warp} were developed by us.
 
-\begin{savenotes}
-\begin{table*}[th]
-\begin{center}
-\caption{The benchmarks employed in this study.}\label{tab:benchmarks}
-\newcolumntype{V}{>{\centering\arraybackslash}m{.16\linewidth} }
-\begin{tabular}{ | V | m{0.77\linewidth} | }
-  \hline
-  \textbf{Benchmark} & \multicolumn{1}{c|}{\textbf{Description}} \\
+\begin{enumerate}
+  \item \label{bench:chameneos}\chameneos: In this benchmark chameneos creatures go to a meeting place and exchange colors with a meeting partner. It encodes symmetrical cooperation between threads.
 
-  \hline
-  \chameneos        & In this benchmark chameneos creatures go to a meeting place and exchange colors with a meeting partner. It encodes symmetrical cooperation between threads. \\
+  \item \fasta:  This benchmark generates random DNA sequences and writes it in FASTA format\footnote{https://en.wikipedia.org/wiki/FASTA\_format}. The size of the generated DNA sequences is in the order of hundreds of megabytes. In this benchmark,  each worker synchronizes with the previous one to output the sub-sequences of DNA in the correct order.
 
-  \hline
-  \fasta            & This benchmark generates random DNA sequences and writes it in FASTA format\footnote{https://en.wikipedia.org/wiki/FASTA\_format}. The size of the generated DNA sequences is in the order of hundreds of megabytes. In this benchmark,  each worker synchronizes with the previous one to output the sub-sequences of DNA in the correct order. \\
+  \item \knucleotide: This benchmark takes a DNA sequence and counts the occurrences and the frequency of nucleotide patterns. This benchmark employs string manipulation and hashtable updates intensively. There is no synchronization in the program besides the main thread waiting for the result of each worker.
 
-  \hline
-  \knucleotide      & This benchmark takes a DNA sequence and counts the occurrences and the frequency of nucleotide patterns. This benchmark employs string manipulation and hashtable updates intensively. There is no synchronization in the program besides the main thread waiting for the result of each worker. \\
+  \item \mandelbrot: A mandelbrot is a mathematical set of points whose boundary is a distinctive and easily recognizable two-dimensional fractal shape. Mandelbrot set images are created by sampling complex numbers and determining for each one whether the result tends toward infinity when a particular mathematical operation is iterated on it. The only synchronization point is the main thread waiting for the result of each worker.
 
-  \hline
-  \mandelbrot       & A mandelbrot is a mathematical set of points whose boundary is a distinctive and easily recognizable two-dimensional fractal shape. Mandelbrot set images are created by sampling complex numbers and determining for each one whether the result tends toward infinity when a particular mathematical operation is iterated on it. The only synchronization point is the main thread waiting for the result of each worker. \\
+  \item \regex: This benchmark implements a string-based algorithm that performs multiple regular expression operations, match and replace, over a DNA sequence. The only synchronization point is the main thread waiting for the result of each worker.
 
-  \hline
-  \regex            & This benchmark implements a string-based algorithm that performs multiple regular expression operations, match and replace, over a DNA sequence. The only synchronization point is the main thread waiting for the result of each worker. \\
+  \item \label{bench:spectral}\spectral: The spectral norm is the maximum singular value of a matrix. Synchronizes workers using a cyclic barrier.
 
-  \hline
-  \spectral         & The spectral norm is the maximum singular value of a matrix. Synchronizes workers using a cyclic barrier. \\
+  \item \label{bench:dining}\dining: An implementation of the classical concurrent programming problem posed by Dijkstra. The philosophers perform no work besides manipulating the forks and printing a message when eating.
 
-  \hline
-  \dining           & An implementation of the classical concurrent programming problem posed by Dijkstra. The philosophers perform no work besides manipulating the forks and printing a message when eating. \\
+  \item \label{bench:tsearch}\tsearch: A parallel text search engine. This benchmark searches for occurrences of a sentence in all text files in a directory and its sub-directories. It is based on a previous empirical study comparing STM and locks~\citep{pankratius:2011}.
 
-  \hline
-  \tsearch          & A parallel text search engine. This benchmark searches for occurrences of a sentence in all text files in a directory and its sub-directories. It is based on a previous empirical study comparing STM and locks~\citep{pankratius:2011}. \\
-
-  \hline
-  \warp             & Runs a set of queries against a Warp server retrieving the resulting webpages. Warp is the default web server used by the Haskell Web Application Interface, part of the Yesod Web Framework. This benchmark was inspired by the Tomcat benchmark from DaCapo~\citep{blackburn:2006}. \\
-
-  \hline
-\end{tabular}
-\end{center}
-\end{table*}
-\end{savenotes}
+  \item \label{bench:warp}\warp: Runs a set of queries against a Warp server retrieving the resulting webpages. Warp is the default web server used by the Haskell Web Application Interface, part of the Yesod Web Framework. This benchmark was inspired by the Tomcat benchmark from DaCapo~\citep{blackburn:2006}.
+\end{enumerate}
 
 We selected the benchmarks based on their diversity. For instance, \chameneos and \dining are synchronization-intensive programs. \mandelbrot and \spectral are CPU-intensive and scale well on a multicore machine. \knucleotide and \regex are CPU- and memory-intensive, while \warp is IO-intensive. \tsearch combines IO and CPU operations, though much of the work it performs is CPU-intensive. \fasta is peculiar in that is CPU-, memory-, synchronization- and IO-intensive.
 
