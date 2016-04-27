@@ -17,7 +17,7 @@ This study is motivated by the following research questions:
 In this section we describe the benchmarks that we analyzed, the infrastructure and the methodology that we used to perform the experiments.
 
 \subsection{Benchmarks}
-We selected a variety of concurrent Haskell programs to use as benchmarks in our study, listed as follows. Benchmarks \ref{bench:chameneos}-\ref{bench:spectral} are from \ac{clbg}\footnote{http://benchmarksgame.alioth.debian.org/}. \acs{clbg} is a benchmark suite aiming to compare the performance of various programming languages. Benchmark \ref{bench:dining} is from  Rosetta Code \footnote{http://rosettacode.org/}, a code repository of solutions to common programming tasks. Benchmarks \ref{bench:tsearch}-\ref{bench:warp} were developed by us.
+We selected a variety of concurrent Haskell programs to use as benchmarks in our study, listed as follows. Benchmarks \ref{bench:chameneos}-\ref{bench:spectral} are from \ac{clbg}\footnote{http://benchmarksgame.alioth.debian.org/}. \acs{clbg} is a benchmark suite aiming to compare the performance of the runtime of various programming languages. Benchmark \ref{bench:dining} is from  Rosetta Code \footnote{http://rosettacode.org/}, a code repository of solutions to common programming tasks. Benchmarks \ref{bench:tsearch}-\ref{bench:warp} were developed by us.
 
 \begin{enumerate}
   \item \label{bench:chameneos}\chameneos: In this benchmark chameneos creatures go to a meeting place and exchange colors with a meeting partner. It encodes symmetrical cooperation between threads.
@@ -36,7 +36,7 @@ We selected a variety of concurrent Haskell programs to use as benchmarks in our
 
   \item \label{bench:tsearch}\tsearch: A parallel text search engine. This benchmark searches for occurrences of a sentence in all text files in a directory and its sub-directories. It is based on a previous empirical study comparing STM and locks~\citep{pankratius:2011}.
 
-  \item \label{bench:warp}\warp: Runs a set of queries against a Warp server retrieving the resulting webpages. Warp is the default web server used by the Haskell Web Application Interface, part of the Yesod Web Framework. This benchmark was inspired by the Tomcat benchmark from DaCapo~\citep{blackburn:2006}.
+  \item \label{bench:warp}\warp: Runs a set of queries against a Warp server retrieving the resulting webpages. Warp is the default web server used by the \ac{wai}, part of the Yesod Web Framework. This benchmark was inspired by the Tomcat benchmark from DaCapo~\citep{blackburn:2006}.
 \end{enumerate}
 
 We selected the benchmarks based on their diversity. For instance, \chameneos and \dining are synchronization-intensive programs. \mandelbrot and \spectral are CPU-intensive and scale well on a multicore machine. \knucleotide and \regex are CPU- and memory-intensive, while \warp is IO-intensive. \tsearch combines IO and CPU operations, though much of the work it performs is CPU-intensive. \fasta is peculiar in that is CPU-, memory-, synchronization- and IO-intensive.
