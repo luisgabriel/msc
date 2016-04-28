@@ -2,15 +2,17 @@
 In this chapter, we present an empirical study evaluating the performance and energy consumption characteristics of three thread management constructs and three data-sharing primitives of Concurrent Haskell. We start by providing a brief overview (\secref{sec:overview}) of the study and state the research questions. \secref{sec:setup} describes the benchmark we developed, the environment and the methodology we used. Sections \ref{sec:results} and \ref{sec:discussion} provides our results. Finally, \secref{sec:threats} list the threats to validity.
 
 \section{Overview}\label{sec:overview}
-%% Give more context before presenting the research questions
+%% [[ little motivation to this study ]]
 
-This study is motivated by the following research questions:
+We believe a first step to optimize energy consumption of concurrent programs is to gain a comprehensive understanding of their energy behaviors. This chapter presents an empirical study to understand the energy behaviors of Haskell concurrent programs on multicore architectures. In particular, our study focus on how programmer decisions may impact energy consumption and performance. Our research is motivated by the following questions:
 
 \begin{enumerate}[label=\RQ{\arabic*}.]
   \item Do alternative \textit{thread management constructs} have different impacts on energy consumption?
   \item Do alternative \textit{data-sharing primitives} have different impacts on energy consumption?
   \item What is the relationship between the \textit{number of capabilities} and energy consumption?
 \end{enumerate}
+
+To answer \RQ{1}, we select three thread management constructs: \forkIO, \forkOn and \forkOS. As we saw in \secref{sec:haskell-conc}, these are the three functions we have in Haskell to spawn a new thread of execution. To answer \RQ{2}, we select three data-sharing primitives: \MVar, \TMVar and \TVar. Given these constructs, our investigation aims to understand how the energy consumption can be impacted by simply changing the concurrency primitive used in a Haskell program. Finally, to answer \RQ{3}, we explore various capabilities settings to see how it can impact energy consumption and performance on a multicore environment.
 
 
 \section{Study Setup}\label{sec:setup}
