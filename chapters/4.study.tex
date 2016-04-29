@@ -57,44 +57,67 @@ Each variant we created is a standalone executable. This executable is a Criteri
 
 
 \section{Study Results}\label{sec:results}
-In this section, we report the results of our experiments with concurrent Haskell programs. The results are presented in \figref{fig:conc_bench}. Here, the odd rows are energy consumption results, while the even rows are the corresponding running time results. We omitted the experiments using 64 capabilities in order to make the charts more readable. The charts including this configuration as well as all the data and source code used in this study are available at \href{http://green-haskell.github.io/}{green-haskell.github.io}.
+In this section, we report the results of our experiments with concurrent Haskell programs. The results are presented in Figures \ref{fig:conc_bench1}, \ref{fig:conc_bench2} and \ref{fig:conc_bench3}. Here, the odd rows are energy consumption results, while the even rows are the corresponding running time results. We omitted the experiments using 64 capabilities in order to make the charts more readable. The charts including this configuration as well as all the data and source code used in this study are available at \href{http://green-haskell.github.io/}{green-haskell.github.io}.
 \newline
 
 \begin{figure*}[tp]
-\caption{Energy/Time with alternative concurrency abstractions and varying the number of capabilities}
-\begin{center}
+\caption{Energy and Time charts for \chameneos, \dining, \fasta and \knucleotide}
+\centering
 $
 \begin{array}{ccc}
- \includegraphics[width=.32\textwidth]{images/conc_bench/chameneos-redux-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/dining-philosophers-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/fasta-energy} \\
+ \includegraphics[width=.48\textwidth]{images/conc_bench/chameneos-redux-energy} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/dining-philosophers-energy} \\
+ \\
 
- \includegraphics[width=.32\textwidth]{images/conc_bench/chameneos-redux-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/dining-philosophers-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/fasta-time} \\
- \\ %\\
+ \includegraphics[width=.48\textwidth]{images/conc_bench/chameneos-redux-time} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/dining-philosophers-time} \\
 
- \includegraphics[width=.32\textwidth]{images/conc_bench/k-nucleotide-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/mandelbrot-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/regex-dna-energy} \\
+ \includegraphics[width=.48\textwidth]{images/conc_bench/fasta-energy} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/k-nucleotide-energy}  \\
 
-
- \includegraphics[width=.32\textwidth]{images/conc_bench/k-nucleotide-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/mandelbrot-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/regex-dna-time} \\
- \\ %\\
-
- \includegraphics[width=.32\textwidth]{images/conc_bench/spectral-norm-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/tsearch-energy} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/warp-energy} \\
-
- \includegraphics[width=.32\textwidth]{images/conc_bench/spectral-norm-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/tsearch-time} &
- \includegraphics[width=.32\textwidth]{images/conc_bench/warp-time} \\
+ \includegraphics[width=.48\textwidth]{images/conc_bench/fasta-time} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/k-nucleotide-time}  \\
 \end{array}
 $
-\end{center}
-\label{fig:conc_bench}
+\footnotesize{Source: Made by the author.}
+\label{fig:conc_bench1}
+\end{figure*}
+
+\begin{figure*}[tp]
+\caption{Energy and Time charts for \mandelbrot, \regex, \spectral and \tsearch}
+\centering
+$
+\begin{array}{ccc}
+ \includegraphics[width=.48\textwidth]{images/conc_bench/mandelbrot-energy} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/regex-dna-energy} \\
+
+ \includegraphics[width=.48\textwidth]{images/conc_bench/mandelbrot-time} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/regex-dna-time} \\
+ \\
+
+ \includegraphics[width=.48\textwidth]{images/conc_bench/spectral-norm-energy} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/tsearch-energy} \\
+
+ \includegraphics[width=.48\textwidth]{images/conc_bench/spectral-norm-time} &
+ \includegraphics[width=.48\textwidth]{images/conc_bench/tsearch-time} \\
+\end{array}
+$
+\footnotesize{Source: Made by the author.}
+\label{fig:conc_bench2}
+\end{figure*}
+
+\begin{figure*}[tp]
+\caption{Energy and Time charts for \warp}
+\centering
+$
+\begin{array}{c}
+ \includegraphics[width=.48\textwidth]{images/conc_bench/warp-energy} \\
+ \includegraphics[width=.48\textwidth]{images/conc_bench/warp-time} \\
+\end{array}
+$
+\\
+\footnotesize{Source: Made by the author.}
+\label{fig:conc_bench3}
 \end{figure*}
 
 \state{Small changes can produce big savings.} One of the main findings of this study is that simple refactorings such as switching between thread management constructs can have considerable impact on energy usage. For example, in \spectral, using \forkOn instead of \forkOS with \TVar can save between 25 and 57\% energy, for a number of capabilities ranging between 2 and 40. Although the savings vary depending on the number of capabilities, for \spectral \forkOn exhibits lower energy usage independently of this number. For \mandelbrot, variants using \forkOS and \forkOn with \MVar exhibited consistently lower energy consumption than ones using \forkIO, independently of the number of capabilities. For the \forkOS variants, the savings ranged from 5.7 to 15.4\% whereas for \forkOn variants the savings ranged from 11.2 to 19.6\%.
@@ -102,7 +125,7 @@ $
 This finding also applies to data sharing primitives. In \chameneos, switching from \TMVar to \MVar with \forkOn can yield energy savings of up to 61.2\%. Moreover, it is advantageous to use \MVar independently of the number of capabilities. In a similar vein, in \fasta, going from \TVar to \MVar with \forkIO can produce savings of up to 65.2\%. We further discuss the implications of this finding in \secref{sec:discussion}.
 \newline
 
-\state{Faster is not always greener.} Overall, the shapes of the curves in Figure~\ref{fig:conc_bench} are similar. Although, for 6 of our 9 benchmarks, in at least two variants of each one, there are moments where faster running time leads to a higher energy consumption. For instance, in the \forkOn-\TMVar variant of \regex, the benchmark is 12\% faster when varying the number of capabilities from 4 to 20 capabilities. But at the same time, its energy consumption increases by 51\% . Also, changing the number of capabilities from 8 to 16 in the \forkIO variant of \tsearch makes it 8\% faster and 22\% less energy-efficient.
+\state{Faster is not always greener.} Overall, the shapes of the curves in Figures \ref{fig:conc_bench1}, \ref{fig:conc_bench2} and \ref{fig:conc_bench3} are similar. Although, for 6 of our 9 benchmarks, in at least two variants of each one, there are moments where faster running time leads to a higher energy consumption. For instance, in the \forkOn-\TMVar variant of \regex, the benchmark is 12\% faster when varying the number of capabilities from 4 to 20 capabilities. But at the same time, its energy consumption increases by 51\% . Also, changing the number of capabilities from 8 to 16 in the \forkIO variant of \tsearch makes it 8\% faster and 22\% less energy-efficient.
 
 In one particular benchmark, \fasta, we had strongly divergent results in terms of performance and energy consumption for some of the variants. For this benchmark, the variants  employing \TVar outperformed the ones using \TMVar and \MVar. For example, when using a number of capabilities equal to the number of physical cores of the underlying machine (20), the \forkOS-\TVar variant was 43.7\% faster than the \forkOS-\MVar one. At the same time, the \TVar variants exhibited the worst energy consumption. In the aforementioned configuration, the \forkOS-\TVar variant consumed 87.4\% more energy.
 \newline
@@ -128,17 +151,17 @@ Although there is no overall winner, there is a more or less clear loser, when t
 \section{Threats to Validity}\label{sec:threats}
 This work focused on the Haskell programming language. It is possible that its results do not apply to other functional programming languages, especially considering that Haskell is one of the few lazy programming languages in existence. Moreover, we analyzed only the data structures available in the Edison library and a subset of Haskell's constructs for concurrent and parallel programming. It is not possible to extrapolate the results to other data structure implementations or to alternative constructs for concurrent and parallel execution. Nonetheless, our evaluation comprised a large number of experimental configurations that cover widely-used constructs of the Haskell language.
 
-It is not possible to generalize the results of this study to other hardware platforms for which Haskell programs can be compiled. Factors such as operating system scheduling policies~\citep{yuan:2003} and processor and interconnect layouts~\citep{solernou:2013} can clearly impact the results. We take a route common in experimental programming language research, by constructing experiments over representative system software and hardware, and the results are empirical by nature. To take a step further, we have re-executed the experiments in additional hardware configurations. The primary goal is to understand the stability and portability of our results. We ran some of the benchmarks on another machine, a 4-core Intel i7-3770 (IvyBridge) with 8 GB of DDR 1600 runing Ubuntu Server 14.04.3 LTS (kernel 3.19.0-25) and GHC 7.10.2. \figref{fig:other-machine-conc} shows the results of \mandelbrot running on this i7 machine. The results show analogous trends in which the curves have similar shapes to the results of \figref{fig:conc_bench}. The same trend can be observed for the remaining benchmarks.
+It is not possible to generalize the results of this study to other hardware platforms for which Haskell programs can be compiled. Factors such as operating system scheduling policies~\citep{yuan:2003} and processor and interconnect layouts~\citep{solernou:2013} can clearly impact the results. We take a route common in experimental programming language research, by constructing experiments over representative system software and hardware, and the results are empirical by nature. To take a step further, we have re-executed the experiments in additional hardware configurations. The primary goal is to understand the stability and portability of our results. We ran some of the benchmarks on another machine, a 4-core Intel i7-3770 (IvyBridge) with 8 GB of DDR 1600 runing Ubuntu Server 14.04.3 LTS (kernel 3.19.0-25) and GHC 7.10.2. \figref{fig:other-machine-conc} shows the results of \mandelbrot running on this i7 machine. The results show analogous trends in which the curves have similar shapes to the results of \figref{fig:conc_bench2}. The same trend can be observed for the remaining benchmarks.
 
 \begin{figure}[t]
-\caption{Energy/Time on Alternative Platform}
-\begin{center}
+\caption{Energy and Time charts on Alternative Platform}
+\centering
 $
 \begin{array}{cc}
 \includegraphics[width=0.47\linewidth]{images/conc_bench/mandelbrot-i7-energy} &
 \includegraphics[width=0.47\linewidth]{images/conc_bench/mandelbrot-i7-time} \end{array}
 $
-\end{center}
+\footnotesize{Source: Made by the author.}
 \label{fig:other-machine-conc}
 \end{figure}
 
