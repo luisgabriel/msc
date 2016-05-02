@@ -28,13 +28,13 @@ We selected a variety of concurrent Haskell programs to use as benchmarks in our
 
   \item \knucleotide: This benchmark takes a DNA sequence and counts the occurrences and the frequency of nucleotide patterns. This benchmark employs string manipulation and hashtable updates intensively. There is no synchronization in the program besides the main thread waiting for the result of each worker.
 
-  \item \mandelbrot: A mandelbrot is a mathematical set of points whose boundary is a distinctive and easily recognizable two-dimensional fractal shape. Mandelbrot set images are created by sampling complex numbers and determining for each one whether the result tends toward infinity when a particular mathematical operation is iterated on it. The only synchronization point is the main thread waiting for the result of each worker.
+  \item \mandelbrot: A mandelbrot is a mathematical set of points whose boundary is a distinctive and easily recognizable two-dimensional fractal shape. Mandelbrot set images are created by sampling complex numbers and determining for each one whether the result tends toward infinity when a particular mathematical operation is iterated on it. The only synchronization point in this benchmark is the main thread waiting for the result of each worker.
 
   \item \regex: This benchmark implements a string-based algorithm that performs multiple regular expression operations, match and replace, over a DNA sequence. The only synchronization point is the main thread waiting for the result of each worker.
 
-  \item \label{bench:spectral}\spectral: The spectral norm is the maximum singular value of a matrix. Synchronizes workers using a cyclic barrier.
+  \item \label{bench:spectral}\spectral: The spectral norm is the maximum singular value of a matrix. It synchronizes the workers using a cyclic barrier.
 
-  \item \label{bench:dining}\dining: An implementation of the classical concurrent programming problem posed by Dijkstra. The philosophers perform no work besides manipulating the forks and printing a message when eating.
+  \item \label{bench:dining}\dining: An implementation of the classical concurrent programming problem posed by~\cite{dijkstra:1971}. The philosophers perform no work besides manipulating the forks and printing a message when eating.
 
   \item \label{bench:tsearch}\tsearch: A parallel text search engine. This benchmark searches for occurrences of a sentence in all text files in a directory and its sub-directories. It is based on a previous empirical study comparing STM and locks~\citep{pankratius:2011}.
 
