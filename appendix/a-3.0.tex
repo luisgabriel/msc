@@ -1,0 +1,15 @@
+data CyclicBarrier = Cyclic !Int !(MVar (Int, [MVar ()]))
+
+await :: CyclicBarrier -> IO ()
+await (Cyclic k waitsVar) = do
+	(x, waits) <- takeMVar waitsVar
+	if x <= 1 then do
+		mapM_ (`putMVar` ()) waits
+		putMVar waitsVar (k, [])
+	  else do
+	  	var <- newEmptyMVar
+	  	putMVar waitsVar (x-1,var:waits)
+	  	takeMVar var
+
+newCyclicBarrier :: Int -> IO CyclicBarrier
+newCyclicBarrier k = liftM (Cyclic k) (newMVar (k, []))

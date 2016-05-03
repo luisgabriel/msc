@@ -1,0 +1,30 @@
+module Program (exec,main) where
+
+import Utils(redirectStdOutAndRun)
+
+import System.Environment
+import Foreign.Marshal.Array
+import Foreign
+import Text.Printf
+import Control.Concurrent
+import Control.Monad
+import GHC.Base hiding (foldr)
+import GHC.Conc
+import System.IO
+import System.Directory (removeFile,getTemporaryDirectory)
+import GHC.IO.Handle
+
+type Reals = Ptr Double
+
+main = do
+    n <- getArgs >>= readIO . head
+    exec' n
+
+exec n = redirectStdOutAndRun exec' n
+
+exec' n = do
+    allocaArray n $ \ u -> allocaArray n $ \ v -> do
+      forM_ [0..n-1] $ \i -> pokeElemOff u i 1 >> pokeElemOff v i 0
+
+      powerMethod 10 n u v
+      printf "%.9f\n" =<< eigenvalue n u v 0 0 0

@@ -235,6 +235,7 @@
   \gdef\@listoffiguresname{List of Figures}
   \renewcommand{\lstlistingname}{Code}
   \gdef\@lstlistoflistingname{List of {\lstlistingname}s}
+  \gdef\@appendixname{Appendix}
   \renewcommand{\appendixtocname}{Appendix}
   \renewcommand{\appendixpagename}{Appendix}
   \newcommand\bibliographytocname{References}

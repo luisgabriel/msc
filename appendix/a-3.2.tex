@@ -1,0 +1,16 @@
+data CyclicBarrier = Cyclic !Int !(TVar (Int, [TMVar ()]))
+
+await :: CyclicBarrier -> IO ()
+await (Cyclic k waitsVar) = join $ atomically $ do
+	(x, waits) <- readTVar waitsVar
+	if x <= 1 then do
+		mapM_ (\x -> putTMVar x ()) waits
+		writeTVar waitsVar (k, [])
+		return $ return ()
+	  else do
+	  	var <- newEmptyTMVar
+	  	writeTVar waitsVar (x-1,var:waits)
+	  	return $ atomically $ takeTMVar var
+
+newCyclicBarrier :: Int -> IO CyclicBarrier
+newCyclicBarrier k = liftM (Cyclic k) (atomically $ newTVar (k, []))

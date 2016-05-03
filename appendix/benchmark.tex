@@ -1,0 +1,58 @@
+\chapter{The \spectral Benchmark}\label{ap:benchmark}
+
+This benchmark is part of \acl{clbg} suite. It is based on a MathWorld challenge called \emph{"Hundred-Dollar, Hundred-Digit Challenge Problems"} by Eric W. Weisstein\footnote{http://mathworld.wolfram.com/Hundred-DollarHundred-DigitChallengeProblems.html}. To submit a solution for this problem on \acl{clbg}, the program should not only give the correct result, but also use the same algorithm to calculate that result. Each program should:
+
+\begin{enumerate}
+  \item Calculate the spectral norm of an infinite matrix A, with entries $a_{11}=1, a_{12}=\frac{1}{2}, a_{21}=\frac{1}{3}, a_{13}=\frac{1}{4}, a_{22}=\frac{1}{5}, a_{31}=\frac{1}{6}...$
+  \item Implement 4 separate functions to:
+  \begin{itemize}
+    \item Return element $(i,j)$ of infinite matrix $A$
+    \item Multiply vector $V$ by matrix $A$
+    \item Multiply vector $V$ by matrix $A$ transposed
+    \item Multiply vector $V$ by matrix $A$ and then by matrix $A$ transposed
+  \end{itemize}
+\end{enumerate}
+
+Following, we show the implementation we used for this benchmark. In this case, we are showing only the  source code for the \forkIO variant as the refactoring to change the thread management construct is straightforward. We split it in multiple sections to better present it here, but it can be seen as a whole on GitHub\footnote{https://github.com/green-haskell/concurrency-benchmark}. \autoref{code:b_criterion} is the entry point of the program where we define the Criterion benchmark that will call \spectral. \autoref{code:b_main} and \autoref{code:b_eign} are common parts that were not refactored. \autoref{code:b_mvar}, \autoref{code:b_tmvar} and \autoref{code:b_tvar} show the implementation of the \texttt{CyclicBarrier} type for the \MVar, \TMVar and \TVar variants, respectively. Finally, \autoref{code:b_functions} shows the fours functions required by the problem statement.
+
+\begin{listing}
+  \caption{The Criterion benchmark}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-0.tex}
+  \label{code:b_criterion}
+\end{listing}
+
+\begin{listing}
+  \caption{Entry point of \spectral}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-1.tex}
+  \label{code:b_main}
+\end{listing}
+
+\begin{listing}
+  \caption{A function to calculate the eigenvalue of a matrix}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-2.tex}
+  \label{code:b_eign}
+\end{listing}
+
+\begin{listing}
+  \caption{\texttt{CyclicBarrier} defined for the \MVar variant}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-3.0.tex}
+  \label{code:b_mvar}
+\end{listing}
+
+\begin{listing}
+  \caption{\texttt{CyclicBarrier} defined for the \TMVar variant}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-3.1.tex}
+  \label{code:b_tmvar}
+\end{listing}
+
+\begin{listing}
+  \caption{\texttt{CyclicBarrier} defined for the \TVar variant}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-3.2.tex}
+  \label{code:b_tvar}
+\end{listing}
+
+\begin{listing}
+  \caption{The four functions to manipulate the matrix}
+  \inputminted[fontsize=\scriptsize]{haskell}{appendix/a-4.tex}
+  \label{code:b_functions}
+\end{listing}

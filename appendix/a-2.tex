@@ -1,0 +1,6 @@
+eigenvalue :: Int -> Reals -> Reals -> Int -> Double -> Double -> IO Double
+eigenvalue !n !u !v !i !vBv !vv
+    | i < n     = do	ui <- peekElemOff u i
+			vi <- peekElemOff v i
+			eigenvalue n u v (i+1) (vBv + ui * vi) (vv + vi * vi)
+    | otherwise = return $! sqrt $! vBv / vv
