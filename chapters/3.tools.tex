@@ -1,12 +1,17 @@
 \chapter{Measuring Energy Consumption}\label{chapter:tools}
+Measuring the energy consumption of a computer system is a broad area of research. There are several ways we can accomplish this task. They can be categorized into two separate approaches: power measurement and energy estimation. The first one, power measurement, makes use of special power measurement hardware to collect power samples of the running system. These samples are often measured in watts. We can then obtain the energy (in joules) multiplying the power by the time: $E = P \times t$.
+%There are several power meters currently available in the market that can be used to collect this kind of data. Depending on the manufacturer, these power meters can have different characteristics. One of the most important is sampling rate, which defines the number of samples of power the is collected per second. It can vary from 1 to 1,000 samples per second. The higher the sampling rate, more accurate the final energy measurement will be.
+The second approach, energy estimation, uses software-based techniques to predict how much energy the system will consume at runtime. It collects data from the running system to be used as predictors of energy consumption. For instance, powertop\footnote{https://01.org/powertop} is a Linux tool that uses this approach. It monitors CPU states, devices drivers and kernel options to report how the active components of the system are behaving regarding power consumption.
 
-\section{RAPL}
+For this work, we chose to use an energy estimation approach for measuring the energy consumption of Haskell programs. In \secref{sec:rapl}, we present more details about \acs{rapl}, which is the technique we chose. Later, in \secref{sec:profiler} and \secref{sec:criterion}, we present two different performance analysis tools of the Haskell ecosystem: the \acs{ghc} profiler and Criterion. We explain how these tools work and how we extended them also to analyze energy consumption.
+
+\section{RAPL}\label{sec:rapl}
 \lipsum[1-3]
 
 
-\section{Criterion}
+\section{GHC Profiler}\label{sec:profiler}
 \lipsum[1-4]
 
 
-\section{GHC Profiler}
+\section{Criterion}\label{sec:criterion}
 \lipsum[1-4]
