@@ -98,4 +98,54 @@ Despite this limitation, the profiler tool is particularly useful for providing 
 
 
 \section{Criterion}\label{sec:criterion}
-\lipsum[1-4]
+Criterion~\citep{sullivan:2009} is a microbenchmarking library that is used
+to measure the performance of Haskell code. Its main objective is to estimate the cost of running a small, independent piece of code. At a first glance, it may seem that it does the same job of a profiler, but this is not the case. Criterion is not designed to finding hot spots in a program. Instead, it is useful for analyzing the cost of a given operation. A profiler reports to the developer fine-grained information about a single execution of a program. Criterion, however, reports to the developer the estimated cost of running a certain piece of code based on several executions of this code. % [[ missing conclusion. why is this cool? ]]
+
+\begin{listing}
+  \caption{Benchmark definition for a \texttt{fib} function using Criterion}
+  \begin{minted}{haskell}
+import Criterion.Main
+
+fib :: Int -> Int
+fib m | m < 0     = error "negative!"
+      | otherwise = go m
+  where
+    go 0 = 0
+    go 1 = 1
+    go n = go (n-1) + go (n-2)
+
+main :: IO ()
+main = defaultMain [
+  bgroup "fib" [ bench "5" $ whnf fib 5
+               , bench "9" $ whnf fib 9
+               ]
+  ]
+  \end{minted}
+  \label{code:fib-crit}
+\end{listing}
+
+In \autoref{code:fib-crit}\footnote{This example was extracted from \url{http://www.serpentine.com/criterion/tutorial.html}}, we show an example of how to define a Criterion benchmark. In this case, we want to analyse the the performance of the \texttt{fib} function. So we define two benchmarks for Criterion to perform: the first executes \texttt{fib 5} while the second executes \texttt{fib 9}. Functions \texttt{defaultMain}, \texttt{bgroup}, \texttt{bench} and \texttt{whnf} are part of Criterion's \ac{api}. \texttt{defaultMain} takes care of executing a set of benchmarks. \texttt{bgroup} is a utillity function to group several benchmarks together under a common name. \texttt{bench} is reponsible for creating a benchmark based on an action provided by the developer. Finally, \texttt{whnf} makes sure that the action that is being benchmarked is evaluated to weak head normal form. This avoids benchmark code to be evaluated only once due to Haskell's laziness. We provide more details about the Criterion's \ac{api} on \appref{ap:criterion}.
+
+\begin{figure}[htp]
+  \centering
+  \caption{Program output for \autoref{code:fib-crit}}
+  \begin{Verbatim}[fontsize=\small]
+benchmarking fib/5
+time                 41.08 ns   (40.92 ns .. 41.35 ns)
+                     0.999 R²   (0.999 R² .. 1.000 R²)
+mean                 41.39 ns   (41.19 ns .. 41.84 ns)
+std dev              990.4 ps   (625.4 ps .. 1.580 ns)
+variance introduced by outliers: 37% (moderately inflated)
+
+benchmarking fib/9
+time                 315.8 ns   (314.3 ns .. 318.4 ns)
+                     1.000 R²   (0.999 R² .. 1.000 R²)
+mean                 319.1 ns   (317.2 ns .. 321.1 ns)
+std dev              6.546 ns   (6.026 ns .. 7.283 ns)
+variance introduced by outliers: 26% (moderately inflated)
+  \end{Verbatim}
+  \footnotesize{Source: Made by the author.}
+  \label{fig:fib-output}
+\end{figure}
+
+\figref{fig:fib-output} shows the output for the benchmark described by \autoref{code:fib-crit}.

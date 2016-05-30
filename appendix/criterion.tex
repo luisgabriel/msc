@@ -1,0 +1,19 @@
+\chapter{The Criterion interface}\label{ap:criterion}
+
+\begin{listing}
+  \caption{The Criterion interface}
+  \begin{minted}{haskell}
+data Benchmarkable
+data Benchmark
+
+defaultMain :: [Benchmark] -> IO ()
+bgroup :: String -> [Benchmark] -> Benchmark
+bench :: String -> Benchmarkable -> Benchmark
+
+nf :: NFData b => (a -> b) -> a -> Benchmarkable
+whnf :: (a -> b) -> a -> Benchmarkable
+nfIO :: NFData a => IO a -> Benchmarkable
+whnfIO :: IO a -> Benchmarkable
+  \end{minted}
+  \label{code:criterion-api}
+\end{listing}
