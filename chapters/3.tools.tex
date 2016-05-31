@@ -98,8 +98,15 @@ Despite this limitation, the profiler tool is particularly useful for providing 
 
 
 \section{Criterion}\label{sec:criterion}
-Criterion~\citep{sullivan:2009} is a microbenchmarking library that is used
-to measure the performance of Haskell code. Its main objective is to estimate the cost of running a small, independent piece of code. At a first glance, it may seem that it does the same job of a profiler, but this is not the case. Criterion is not designed to finding hot spots in a program. Instead, it is useful for analyzing the cost of a given operation. A profiler reports to the developer fine-grained information about a single execution of a program. Criterion, however, reports to the developer the estimated cost of running a certain piece of code based on several executions of this code. % [[ missing conclusion. why is this cool? ]]
+Criterion~\citep{sullivan:2009} is a microbenchmarking library that is used to measure the performance of Haskell code. Its main objective is to estimate the cost of running a small, independent piece of code. At a first glance, it may seem that it does the same job of a profiler, but this is not the case. Criterion is not designed to finding hot spots in a program. Instead, it is useful for analyzing the cost of a given operation. A profiler is about taking a snapshot of a single execution of a program and reporting fine-grained information about its performance. Criterion, however, is about running a certain piece of code several times to analyze its performance. It reports to the developer a statistically-backed estimation of the cost of running the selected piece of code. As Criterion does not analyze the performance of each cost centre, only the benchmarked code as a whole, we say its analysis is coarse-grained.
+
+Criterion provides a framework for both executing benchmarks as well as analysing their results. This framework is based on a simple \ac{api} that hides most of the automation it does from the developer, making it easier to use. In \autoref{code:fib-crit}\footnote{This example was extracted from \url{http://www.serpentine.com/criterion/tutorial.html}}, we show an example of how to define a Criterion benchmark. Here, we are employing important functions of Criterion's \ac{api} to analyse the performance of the \texttt{fib} function. We define two benchmarks for Criterion to perform: the first executes \texttt{fib 5} while the second executes \texttt{fib 9}. We provide more details about the Criterion's \ac{api} on \appref{ap:criterion}, but here is a brief explanation about the functions we're using in this example:
+\begin{itemize}
+  \item \texttt{defaultMain}: takes care of executing a set of benchmarks
+  \item \texttt{bgroup}: group several benchmarks together under a common name
+  \item \texttt{bench}: creates a benchmark based on an action provided by the developer
+  \item \texttt{whnf}: makes sure the benchmarked action is evaluated to weak head normal form to avoid it to be evaluated only once due to Haskell's laziness
+\end{itemize}
 
 \begin{listing}
   \caption{Benchmark definition for a \texttt{fib} function using Criterion}
@@ -124,7 +131,7 @@ main = defaultMain [
   \label{code:fib-crit}
 \end{listing}
 
-In \autoref{code:fib-crit}\footnote{This example was extracted from \url{http://www.serpentine.com/criterion/tutorial.html}}, we show an example of how to define a Criterion benchmark. In this case, we want to analyse the the performance of the \texttt{fib} function. So we define two benchmarks for Criterion to perform: the first executes \texttt{fib 5} while the second executes \texttt{fib 9}. Functions \texttt{defaultMain}, \texttt{bgroup}, \texttt{bench} and \texttt{whnf} are part of Criterion's \ac{api}. \texttt{defaultMain} takes care of executing a set of benchmarks. \texttt{bgroup} is a utillity function to group several benchmarks together under a common name. \texttt{bench} is reponsible for creating a benchmark based on an action provided by the developer. Finally, \texttt{whnf} makes sure that the action that is being benchmarked is evaluated to weak head normal form. This avoids benchmark code to be evaluated only once due to Haskell's laziness. We provide more details about the Criterion's \ac{api} on \appref{ap:criterion}.
+In \figref{fig:fib-output}, we show the output for the benchmark described by \autoref{code:fib-crit}.
 
 \begin{figure}[htp]
   \centering
@@ -147,5 +154,3 @@ variance introduced by outliers: 26% (moderately inflated)
   \footnotesize{Source: Made by the author.}
   \label{fig:fib-output}
 \end{figure}
-
-\figref{fig:fib-output} shows the output for the benchmark described by \autoref{code:fib-crit}.
