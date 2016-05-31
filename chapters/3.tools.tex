@@ -128,7 +128,7 @@ main = defaultMain [
   \label{code:fib-crit}
 \end{listing}
 
-In \figref{fig:fib-output}, we show the output for the benchmark described by \autoref{code:fib-crit}.
+In \figref{fig:fib-output}, we show the output for the benchmark described by \autoref{code:fib-crit}. The first line shows \texttt{time}, which is the estimation of the time needed for executing \texttt{fib 9} once. It is obtained using an \ac{ols} regression model. Inside the parenthesis, after the time estimation, we can see the lower and upper bounds of the confidence interval that is calculated using \emph{bootstrapping}~\citep{davison:1997}. It means that when randomly resampling the data, 95\% of estimates fell between the lower and upper bounds of the interval. So the quality of the estimation is better when the bounds are closer to its value. The second line shows the coefficient of determination, or R\textsuperscript{2}, which is a statistical measure of how well the linear regression model approximates the observed measurements. An R\textsuperscript{2} between 0.99 and 1 indicates an excelent approximation. The \texttt{mean} and \texttt{std dev} lines are the mean execution time and the standard deviation, respectively. Finally, the last line indicates the degree to which the standard deviation is inflated by outlying measurements.
 
 \begin{figure}[htp]
   \centering
