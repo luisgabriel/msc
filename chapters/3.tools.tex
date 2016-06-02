@@ -176,3 +176,53 @@ variance introduced by outliers: 13% (moderately inflated)
 \end{figure}
 
 Besides elapsed time, Criterion can also perform linear regression on other metrics such as CPU time, CPU cycles, bytes allocated and number of garbage collections. It can be done by passing the other metric as a command line argument when running the benchmark. For example, passing \texttt{-{}-regress cycles:iters} will regress the number of CPU cycles against the number of loop iterations. \figref{fig:fib-cycle-output} shows the output for such example for \autoref{code:fib-crit}. As we can see, we have three extra lines on the report. The first one corresponds to the R\textsuperscript{2} for the new regression we specified. The second line we have the estimation of how much cycles each iteration costs, which is the slope of the regression curve. The last line is where the curve intercepts the $y$-axis. This feature allows for developers to have a good overview from different perspectives about the performance of the benchmarked code.
+
+In order to employ Criterion in our work, we have extended it to add a new metric: energy consumption. The fact that Criterion's infrastructure already have support for estimating the cost of other metrics than elapsed time helped us to modify it in a "cleaner" way. However, the way the energy data is collected is different from the other metrics due to the fact that \ac{rapl} registers are susceptible to overflows. In \autoref{code:crit-measure}, we show how Criterion currently collects the measurements data. As we can see, it saves the counters before and after it executes the benchmarked code \texttt{iters} times. If we used the same approach for energy consumption, in the presence of an overflow, the data collected would be inconsistent.
+
+\begin{listing}
+  \caption{Criterion's internal function that execute the benchmarks}
+  \begin{minted}{haskell}
+measure :: Benchmarkable -> Int64 -> IO (Measured, Double)
+measure (Benchmarkable run) iters = do
+  startStats <- getGCStats
+  startTime <- getTime
+  startCpuTime <- getCPUTime
+  startCycles <- getCycles
+  run iters
+  endTime <- getTime
+  endCpuTime <- getCPUTime
+  endCycles <- getCycles
+  endStats <- getGCStats
+  let !m = applyGCStats endStats startStats $ measured {
+             measTime    = max 0 (endTime - startTime)
+           , measCpuTime = max 0 (endCpuTime - startCpuTime)
+           , measCycles  = max 0 (fromIntegral (endCycles - startCycles))
+           , measIters   = iters }
+  return $ (m, endTime)
+  \end{minted}
+  \label{code:crit-measure}
+\end{listing}
+
+To overcome this problem, we collect the energy consumption slightly different from the other metrics. We have to constantly read the \ac{rapl} counters during the benchmark execution in order to detect overflows. One way we could accomplish this task is by spawning a background thread to collect the energy data. However, this is approach is not very lightweight. It would increase the measurement overhead and possibly influence the result of more sensitive benchmarks. So instead, we have used native Linux signals. So it works as following: before Criterion runs the benchmarked code, we register a Linux signal to be fired every 10ms. When registering this signal, we attach a signal handler that we implemented. Inside this handler, we read the \ac{rapl} counters, check if an overflow happened, and if not, we save the energy consumed between the last two readings into an internal accumulator. At the end, when the benchmark finishes executing, we can deregister the signal and get the value hold by the accumulator, which is the energy measurements.
+
+To implement this solution, similarly to how the time and cycles data is collected, we use native C code. The communication with the Criterion code, which is implemented in Haskell, is done straightforwardly via foreign function interface (FFI) calls. The interface with Linux to use signals is done using the \texttt{sigaction} and \texttt{setitimer} syscalls. The source code of our modifed version of Criterion is publicly available on GitHub\footnote{\url{http://github.com/green-haskell/criterion}}. In \figref{fig:fib-energy-output}, we show an example of output with the energy metrics for a benchmark we used the study presented in the next chapter. In this case, a single execution of the program is expected to consume 180.9 joules of energy.
+
+\begin{figure}[htp]
+  \centering
+  \caption{Criterion output with energy metrics}
+  \begin{Verbatim}[fontsize=\small]
+benchmarking dining-philosophers (forkOS | MVar)
+time                 2.183 s    (1.915 s .. 2.510 s)
+                     0.997 R²   (0.991 R² .. 1.000 R²)
+mean                 2.179 s    (2.113 s .. 2.212 s)
+std dev              57.17 ms   (0.0 s .. 57.19 ms)
+energy:              0.999 R²   (0.997 R² .. 1.000 R²)
+  iters              180.947    (164.629 .. 200.826)
+  y                  0.937      (-71.359 .. 37.230)
+variance introduced by outliers: 19% (moderately inflated)
+  \end{minted}
+  \footnotesize{Source: Generated by Criterion}
+  \label{fig:fib-energy-output}
+\end{figure}
+
+As we can see, Criterion is a powerful tool. It provides a robust methodology for performing benchmarks of Haskell code. In the next chapter, we present an empirical study where Criterion was heavly employed to measure the performance and energy consumption of various concurrent programming constructs.
