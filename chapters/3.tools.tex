@@ -6,40 +6,39 @@ The second approach, energy estimation, uses software-based techniques to predic
 For this work, we chose to use an energy estimation approach for measuring the energy consumption of Haskell programs. In \secref{sec:rapl}, we present more details about \acs{rapl}, which is the technique we chose. Later, in \secref{sec:profiler} and \secref{sec:criterion}, we present two different performance analysis tools of the Haskell ecosystem: the \acs{ghc} profiler and Criterion. We explain how these tools work and how we extended them also to analyze energy consumption.
 
 \section{RAPL}\label{sec:rapl}
-\ac{rapl}~\citep{david:2010} is an interface designed by Intel to enable chip-level power management. It was introduced with the Sandy Bridge microarchitecture. Nowadays, \acs{rapl} is widely supported by the Intel architectures, including Xeon family CPUs, that targets server systems, and the popular Core i5 and i7 families, that targets domestic use. This interface provides a set of counters with energy and power consumption information. To estimate energy consumption, \acs{rapl} uses a software power model. This model is based on various hardware performance counters, temperature, leakage models and I/O models~\citep{weaver:2012}. Its precision and reliability has been extensively studied~\citep{rotem:2012,hahnel:2012}.
-
-\begin{table}[htp]
-	\caption{List of available RAPL domains}
-	\label{tbl:rapl-sensors}
-	\centering
-	\rowcolors{1}{lightgray!30}{white}
-	\begin{tabular}{ll}
-	  \toprule
-	  \texttt{PKG}  & The entire CPU socket\\
-    \texttt{PP0}  & Processor cores and caches (Core devices)\\
-    \texttt{PP1}  & The on-chip GPU (Uncore devices)\\
-    \texttt{DRAM} & Memory controller\\
-	  \bottomrule
-	\end{tabular}
-\end{table}
-
-With \ac{rapl}, developers can monitor energy consumption and set power limits. The access to this information is divided into different domains, which provides fine grained reports and control. \tabref{tbl:rapl-sensors} list these domains. Each domain is a physically meaningful domain for power management, as we can see in \figref{fig:power-planes}. The \ac{rapl} domains available in a platform vary across product segments. Tipically, the desktop platforms have access to \{\texttt{PKG}, \texttt{PP0}, \texttt{PP1}\}, while the server platforms have access to \{\texttt{PKG}, \texttt{PP0}, \texttt{DRAM}\}.
-% talk about what each RAPL domain supports?
-% source: 01.org/blogs/tlcounts/2014/running-average-power-limit-%E2%80%93-rapl
+\ac{rapl}~\citep{david:2010} is an interface designed by Intel to enable chip-level power management. It was introduced with the Sandy Bridge microarchitecture. Nowadays, \acs{rapl} is widely supported by the Intel architectures, including Xeon family CPUs, that targets server systems, and the popular Core i5 and i7 families, that targets domestic use. This interface provides a set of counters with energy and power consumption information. To estimate energy consumption, \acs{rapl} uses a software power model. This model is based on various hardware performance counters, temperature, leakage models, and I/O models~\citep{weaver:2012}. Its precision and reliability has been extensively studied~\citep{rotem:2012,hahnel:2012}.
 
 \begin{savenotes}
 \begin{figure}[htp]
   \centering
   \caption{Physical representation of the RAPL domains}
   \includegraphics[width=\columnwidth]{images/power-planes-placeholder}
-  \footnotesize{Source: Made by the author inspired on images from the "Intel® Power Governor" article\footnote{https://software.intel.com/en-us/articles/intel-power-governor}}
+  \footnotesize{Source: "Intel® Power Governor" article\footnote{https://software.intel.com/en-us/articles/intel-power-governor}}
   \label{fig:power-planes}
 \end{figure}
 \end{savenotes}
 
-The interaction with \acs{rapl} is done via \acp{msr}. \acp{msr} are special control registers present in the x86 instruction set that are tipically used for debugging, monitoring performance and toggling CPU features. Accessing \acp{msr} requires ring-0 access to the hardware, which is typically only allowed to the operating system kernel. This means that accessing the \ac{rapl} readings requires a kernel driver. In Linux, we do not have an specific driver to access the \ac{rapl} \acp{msr}. Instead, we have a generic \texttt{msr} driver (or kernel module) that exports \ac{msr} access to the userspace. The register readings are exposed as files inside the CPU device directories (e.g. \texttt{/dev/cpu/0/msr}). These files have read-only permission for superusers (root).
+With \ac{rapl}, developers can monitor energy consumption and set power limits. The access to this information is divided into different domains. Each domain is a physically meaningful domain for power management, as we can see in \figref{fig:power-planes}. The \ac{rapl} domains that are available in a platform vary across product segments. Typically, the desktop platforms have access to \{\texttt{PKG}, \texttt{PP0}, \texttt{PP1}\}, while the server platforms have access to \{\texttt{PKG}, \texttt{PP0}, \texttt{DRAM}\}. Each of these domains, provide fine-grained reports and control for power management. In \tabref{tbl:rapl-domains}, we show what each domain supports. For this work, we are interested in the \texttt{ENERGY\_STATUS} information as it provides the current measured energy consumption of a specific domain.
 
-As we can see, manipulating these registers is not a straightforward process. To do this, developers need some knowledge of system programming and familiarity with the processor instruction set to know how to interpret the raw values exposed by the readings. Also, developers using \ac{rapl} need to handle possible register overflows. In a high power consumption scenario, \ac{rapl} \acp{msr} have a wraparound time of around 60 secs~\citep{intel:2016}. So to abstract these low-level interfaces from Haskell developers, we present in the next sections two performance analisys tool that we extended to work with \ac{rapl}.
+\begin{table}[htp]
+	\centering
+	\caption{List of controls supported by the RAPL domains}
+	\rowcolors{1}{lightgray!30}{white}
+	\begin{tabular}{ll}
+	  \toprule
+		\texttt{POWER\_UNIT}    & Provides the scaling factors for each unit\\
+		\texttt{POWER\_LIMIT}   & Allows software to set power limits\\
+		\texttt{ENERGY\_STATUS} & Reports measured actual energy usage\\
+		\texttt{PERF\_STATUS}   & Reports the performance impact of power limiting\\
+		\texttt{POWER\_INFO}    & Reports power range information for \ac{rapl} usage\\
+	  \bottomrule
+	\end{tabular}
+	\label{tbl:rapl-domains}
+\end{table}
+
+The interaction with \acs{rapl} is done via \acp{msr}. Each control listed in \tabref{tbl:rapl-domains} for each domain is a separate \ac{msr}. \acp{msr} are special control registers present in the x86 instruction set that are typically used for debugging, monitoring performance, and toggling CPU features. Accessing \acp{msr} requires ring-0 access to the hardware, which is usually only allowed to the operating system kernel. This means that accessing the \ac{rapl} readings requires a kernel driver. In Linux, we do not have a specific driver to access the \ac{rapl} \acp{msr}. Instead, we have a generic \texttt{msr} driver (or kernel module) that exports \ac{msr} access to the userspace. The register readings are exposed as files inside the CPU device directories (e.g. \texttt{/dev/cpu/0/msr}). These files have read-only permission for superusers (root).
+
+Manipulating these registers is not a very straightforward process. To do this, a developer need some knowledge of system programming and familiarity with the processor instruction set to know how to interpret the raw values exposed by the readings. Also, developers using \ac{rapl} need to handle possible register overflows. In a high power consumption scenario, for example, the \texttt{ENERGY\_STATUS} \ac{msr} of the \texttt{PKG} domain have a wraparound time of around 60 secs~\citep[p. 2465]{intel:2016}. So to abstract these low-level interfaces from Haskell developers, we present in the next sections two performance analysis tool that we extended to collect energy consumption information using \ac{rapl}.
 
 
 \section{GHC Profiler}\label{sec:profiler}
