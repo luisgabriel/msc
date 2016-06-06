@@ -476,8 +476,6 @@ requirements for the degree of \@degree\ in \@majorfielden.
 \newenvironment{references}
 {
 	\backmatter
-	\bibliographystyle{abntex2-alf}
-	%\setlength{\bibhang}{0pt}
 	\singlespacing % Change to singlespacing for the references
 	\begingroup
 	\raggedright
