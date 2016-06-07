@@ -18,7 +18,7 @@ factorial x = x * factorial (x - 1)
   \label{code:fact}
 \end{listing}
 
-Functions in Haskell can be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. \autoref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type}~\cite{cardelli:1985} used to bind the input type to the output type of \texttt{reverse}. It reads: \texttt{reverse} receives a list of any type and returns a list of the same type as the input.
+Functions in Haskell can be \emph{polymorphic}, which means that a function can be generalized to work with multiple types instead of a single one. Other programming languages have similar features such as \emph{generics} in Java and \emph{templates} in C++. \autoref{code:poly} shows an example of a polymorphic function that can reverse a list of any type. In this example, \texttt{t} is a \emph{parametric type} used to bind the input type to the output type of \texttt{reverse}. It reads: \texttt{reverse} receives a list of any type and returns a list of the same type as the input. This kind of polymorphism is known as \emph{parametric polymorphism}~\cite{cardelli:1985}.
 
 \begin{listing}
   \caption{A polymorphic function to reverse a list}
