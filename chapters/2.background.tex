@@ -59,7 +59,7 @@ depth (Node _ l r) = 1 + max (depth l) (depth r)
   \label{code:tree}
 \end{listing}
 
-There is also a concept called \emph{typeclasses} that enhances the definition of new types in Haskell. A typeclass is similar to an interface. It defines a set of functions that can be applied to a particular type. Typeclasses were designed as a way for implementing ad hoc polymorphism in Haskell. \autoref{code:tree-eq} shows an example of instantiation of the \Eq typeclass for the \Tree type we defined earlier. It states that a \Tree is comparable for equality if its contained type is also comparable for equality.
+There is also a concept called \emph{type classes} that enhances the definition of new types in Haskell. A type class is similar to an interface in Java. It defines a set of functions that can be applied to a particular type. This set of functions can be seen as a protocol to which a type must comply. So to instantiate a type class, a type must have its own implementation of each function defined by the protocol. As interfaces in Java, type classes were designed as a way for implementing ad hoc polymorphism in Haskell. The main difference between the two concepts is that type class instances are declared separately from the declaration of the corresponding types; while in Java, the definition of a class must declare any interfaces it implements. In \autoref{code:tree-eq}, we show an example of instantiation of the \Eq type class for the \Tree type defined earlier. It states that a \Tree is comparable for equality if its contained type is also comparable for equality.
 
 \begin{listing}
   \caption{Definition of an \Eq typeclass instance for the \Tree data type}
