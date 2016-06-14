@@ -1,10 +1,20 @@
-\chapter{Introduction}
-\label{chp:introduction}
+\chapter{Introduction}\label{chp:introduction}
 
 % \begin{quotation}[]{Poul Anderson}
 % I have yet to see any problem, however complicated, which, when looked at in the
 % right way, did not become still more complicated.
 % \end{quotation}
+
+We are facing the rapid proliferation of a variety of mobile computing platforms. These small devices are part of a diverse ecosystem that includes smartwatches, smartphones, tablets, IoT sensors, and drones. In this sort of device, it is imperative for deliverying a good user expirence that they stay up and running for as long as possible. So \emph{energy consumption} is a huge concern as it is closely related to battery lifetime. However, this concern goes beyond unwired devices. On the other side of the spectrum, data centers are also affected by low energy efficiency. In this kind of environment, due to its scale, the energy consumption can have a high impact on the maintenance costs. So thanks to these factors, energy efficiency is becoming a key software design attribute.
+
+Although it may seem like a recent problem, the energy efficiency of computer systems has been a concern for researchers for a long time. Initially, most of the research focused on the hardware design layer, developing new ways to build electronic components that wasted less energy~\cite{chandrakasan:1992}. This was motivated by the assumption that only hardware dissipates power, not software. However, in a computer system, software plays a fundamental role in deciding how a computational task will be executed on specific hardware. For this reason, software can have a substantial impact on energy consumption.
+
+From a software perspective, the energy efficiency problem can be tackled at different levels of abstraction, ranging from machine code level to user-facing applications. Traditionally, the research in this area has been focused on low-level software. Much progress has been achieved on building energy-efficient solutions for embedded software~\cite{tiwari:1994}, compilers~\cite{hsu:2003}, operating systems~\cite{merkel:2006} and runtime systems~\cite{ribic:2014, farkas:2000}. However, the growing worldwide movement towards sustainability, including sustainability in software~\cite{becker:2015}, have motivated the study of the energy impact of application software in execution.
+
+Recent empirical studies have provided initial evidence that high-level decisions can effectively reduce the energy usage of an application software~\cite{chung:2001,hindle:2012,pinto:2014,trefethen:2013,manotas:2014,sahin:2014}. It is important to note that optimizing software at the application level does not cancel the lower level optimizations. They are complementary solutions. However, it is still not clear which software engineering practices are beneficial for saving energy. A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved.
+
+In this work, we tackle the software energy consumption problem at the application level. Moreover, we study energy consumption in the context of Concurrent Haskell. We aim to help Haskell developers to better understand how its decisions can impact the energy consumption and performance when developing  concurrent sofware.
+
 
 \section{Problem}
 \lipsum[1-2]
