@@ -1,3 +1,27 @@
-\chapter{To be Defined}
+\chapter{A Guideline for Developers}
+\lipsum[1-2]
 
-\lipsum[1-4]
+
+\section{Use \forkOn for embarrassingly parallel problems}
+\sstate{Description:} Both the performance and energy consumption of a program can be improved by using \forkOn to create new threads of execution when there is little or no dependency among these threads.
+\newline
+
+\sstate{Justification:} A problem that can be decomposed into parallel tasks that do not need to communicate with each other to make progress is called \emph{embarrassingly parallel}. In this kind of problem,
+% XXX: explain why this kind of problem can benefit from the use of forkOn
+% XXX: show that this phenomenon occurs on your study
+% XXX: talk about -qa and -qm and show some results with them enabled
+
+
+% XXX: may change this tip to suggest the number of capabilities to be used?
+\section{Avoid setting more capabilities than available CPUs}
+\sstate{Description:} bla blauuuuu
+\newline
+
+\sstate{Justification:} entaaaao
+
+
+\section{Avoid using \forkOS to spawn new threads}
+\sstate{Description:} bla blauuuuu
+\newline
+
+\sstate{Justification:} entaaaao
