@@ -6,10 +6,9 @@
 \sstate{Description:} Both the performance and energy consumption of a program can be improved by using \forkOn to create new threads of execution when there is little or no dependency among these threads.
 \newline
 
-\sstate{Justification:} A problem that can be decomposed into parallel tasks that do not need to communicate with each other to make progress is called \emph{embarrassingly parallel}. In this kind of problem,
-% XXX: explain why this kind of problem can benefit from the use of forkOn
-% XXX: show that this phenomenon occurs on your study
-% XXX: talk about -qa and -qm and show some results with them enabled
+\sstate{Justification:} A problem that can be decomposed into parallel tasks that do not need to communicate with each other to make progress is called \emph{embarrassingly parallel}. In this kind of problem, we can improve the program's performance by keeping each worker thread executing on a separate CPU core. As the tasks have no dependency, keeping each one on its own core reduces the costs of context-switching. The use of \forkOn does not guarantee that each Haskell thread will be kept running on the same CPU core. However, it ensures that each Haskell thread runs on the same capability during the whole execution. It disables the load balancing of the worker threads among different capabilities, which reduces the overhead incurred by the Haskell runtime system. We observed this phenomenon in the results from our study presented in \chapref{chp:study}. The benchmarks \mandelbrot, \regex and \spectral are embarrassingly parallel problems where the variants using \forkOn superseded the others.
+
+Also, there are two \ac{rts} options that, in conjunction with \forkOn, can improve the performance of some embarrassingly parallel algorithms. The first one is the \texttt{-qa} option. It tries to pin OS threads to CPU cores using native OS facilities\footnote{In Linux, GHC uses the \texttt{sched\_setaffinity()} syscall}. Using this option the OS threads associated with a capability \emph{i} are bound the CPU core \emph{i}. The other one is the \texttt{-qm} option.
 
 
 % XXX: may change this tip to suggest the number of capabilities to be used?
