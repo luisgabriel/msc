@@ -140,6 +140,8 @@ In one particular benchmark, \fasta, we had strongly divergent results in terms 
 
 \state{Choosing more capabilities than available CPUs is harmful.} The performance of most benchmarks is severely impaired by using more capabilities than the number of available CPUs. In \chameneos, for example, moving from 40 to 64 capabilities can cause a 13x slowdown. This suggests that the Haskell runtime system was not designed to handle cases where capabilities outnumber CPU cores. In fact, this assumption makes sense as the official GHC documentation recommends the number of capabilities to match the number of CPU cores. However, the documentation leaves as an open question if virtual cores should be counted. In our experiments, the performance almost never improves after 20 capabilities. So developers should be careful when using more capabilities than available physical CPU cores as it can degrade performance.
 
+%% XXX: when using forkOS, when there is a lot of capabilities, the energy consumption gets worse more rapidly than the performance
+
 
 \section{Discussion}\label{sec:discussion}
 Generally, especially in the sequential benchmarks, high performance is a proxy for low energy consumption. \citeonline{lima:2016} highlighted this for a number of different data structure implementations and operations. Concurrency makes the relationship between performance and energy less obvious, however. Also, there are clear benefits in employing  different thread management constructs and data-sharing primitives. This section examines this in more detail.
