@@ -1,5 +1,7 @@
 \chapter{A Guideline for Developers}
-\lipsum[1-1]
+In this chapter, we provide a guideline that software developers can use for improving the energy efficiency of their concurrent Haskell programs. This guideline is divided into several suggestions where each one is composed by a brief description and a rationale. Each suggestion is presented as a section in this chapter.
+
+It is important to point out that this guideline is based solely on our experimental results from \chapref{chp:study}. Both performance and energy consumption are very sensitive to the experimental conditions in which the software is executed. For this reason, developers should be aware that some contructs can behave differently on other settings. However, as we used a popular and widely available experimental environment, we expect that our suggestions can lead to positive results in most scenarios.
 
 
 \section{Use \forkOn for embarrassingly parallel problems}
