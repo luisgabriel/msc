@@ -15,8 +15,6 @@ From a software perspective, the energy efficiency problem can be tackled at dif
 
 Recent empirical studies have provided initial evidence that high-level decisions can effectively reduce the energy usage of an application software~\cite{chung:2001,hindle:2012,pinto:2014,trefethen:2013,manotas:2014,sahin:2014}. It is important to note that optimizing software at the application level does not cancel the lower level optimizations. They are complementary solutions. However, it is still not clear which software engineering practices are beneficial for saving energy. A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved.
 
-In this work, we tackle the software energy consumption problem at the application level. Moreover, we study energy consumption in the context of Concurrent Haskell. We aim to help Haskell developers to better understand how its decisions can impact the energy consumption and performance when developing  concurrent sofware.
-
 
 \section{Problem}
 \lipsum[1-2]
@@ -27,7 +25,14 @@ In this work, we tackle the software energy consumption problem at the applicati
 
 
 \section{Contributions}
-\lipsum[7-8]
+This work sheds light on the energy behavior of Haskell programs. To the best of our knowledge, this is the first attempt to analyze energy efficiency in the context of functional programming languages. Moreover, this work makes the following contributions:
+
+\begin{itemize}
+  \item \textbf{A tool for fine-grained energy analysis.} We extend the \acs{ghc} profiler to collect and report fine-grained information about the energy consumption of a Haskell program;
+  \item \textbf{A tool for coarse-grained energy analysis.} We extend the Criterion microbenchmarking library to collect, perform and report statistical performance analysis of the energy consumption of Haskell code;
+  \item \textbf{An understanding of the energy behavior of concurrent Haskell programs.} We conduct an extensive experimental space exploration illuminating the relationship between the choices and settings of Haskell's concurrent programming constructs, and performance and energy consumption over real-world Haskell benchmarks;
+  \item \textbf{A list of guidelines on how to write energy-efficient software in Haskell.} We provide some recommendations for helping software developers to write energy-efficient Haskell programs.
+\end{itemize}
 
 \section{Outline}
 The remainder of this work is structured as follows.
