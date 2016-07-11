@@ -26,13 +26,18 @@ In this work, we tackle the software energy consumption problem at the applicati
 \lipsum[3-4]
 
 
-\section{Justification}
-\lipsum[5-6]
-
-
 \section{Contributions}
 \lipsum[7-8]
 
+\section{Outline}
+The remainder of this work is structured as follows.
 
-\section{Organization}
-\lipsum[9-10]
+\textbf{\chapref{chp:background}} reviews essential concepts used throughout this work. First, we briefly introduce the Haskell programming language. We show through a series of code samples some important and distinct features of the language. Second, we present an overview of the fundamentals of concurrent programming. Finally, we present how Haskell approaches concurrent programming. We show which abstractions the language provides for both creating new threads of execution and sharing data among these threads. We also present an overview of how the Haskell's runtime system handles threading on multiprocessors.
+
+In \textbf{\chapref{chp:tools}}, we show how to measure the energy consumption of Haskell programs. First, we explain what is \acs{rapl} and how it can be used to collect energy data. Then, we present in details two performance analysis tools of the Haskell ecosystem that we extended to also work with the energy consumption metric.
+
+\textbf{\chapref{chp:study}} shows how different concurrent constructs impact energy consumption. We present an empirical study that we conducted considering three distinct thread management constructs and primitives for sharing data. Through an extensive experimental space exploration over real-world Haskell benchmarks, we produce a list of findings about the energy behaviors of concurrent Haskell programs, which are not always obvious.
+
+In \textbf{\chapref{chp:guide}}, we present a list of recommendations for Haskell developers on how to write energy-efficient software. These recommendations are based on the results of our empirical study.
+
+Finally, \textbf{\chapref{chp:related}} discusses previous research related to this work and \textbf{\chapref{chp:conclusion}} present our concluding remarks and discuss where this work might lead.
