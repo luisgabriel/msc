@@ -5,7 +5,7 @@
 % right way, did not become still more complicated.
 % \end{quotation}
 
-The evolution of technology is unveiling a reality that could hardly be imaginable some decades ago. Nowadays, we can buy a multiprocessor computer with a few gigabytes of memory with the size of a credit card for less than a hundred dollars. The ability to manufacture such small and potent devices is leading to a rapid proliferation of a variety of mobile computing platforms. These devices are part of a diverse ecosystem that includes smartwatches, smartphones, tablets, IoT sensors, and drones. In this sort of device, it is imperative for delivering a good user experience that they stay up and running for as long as possible. So \emph{energy consumption} is a huge concern in this universe as it is closely related to battery lifetime. %% XXX: the conclusion still need some love
+The evolution of technology is unveiling a reality that could hardly be imaginable some decades ago. Nowadays, we can buy a multiprocessor computer with a few gigabytes of memory with the size of a credit card for less than a hundred dollars. The ability to manufacture such small and potent devices is leading to a rapid proliferation of a variety of mobile computing platforms. These devices are part of a diverse ecosystem that includes smartwatches, smartphones, tablets, IoT sensors, and drones. As they grow in popularity, new challenges arise for the development community. \emph{Energy consumption} is one of them. It is imperative for delivering a good user experience that these devices stay up and running for as long as possible. As battery lifetime is closely related to energy consumption, it means that building energy-efficient systems is becoming mandatory for providing value to the end user.
 
 This concern, however, goes beyond unwired devices. On the other side of the spectrum, big internet companies are also affected by low energy efficiency. To deliver fast access to its services globally, these companies usually have to maintain a huge server infrastructure to host its products. In this kind of environment, due to its scale, the energy consumption can have a high impact on the maintenance costs. For instance, Facebook is building data centers inside the Arctic Circle in order to improve the system's energy efficiency by reducing the power needed for cooling\footnote{\scriptsize\url{http://www.bloomberg.com/news/articles/2013-10-04/facebooks-new-data-center-in-sweden-puts-the-heat-on-hardware-makers}}. This is just one example of the economic impact driven by the seek for more efficient solutions. It shows that energy efficiency is becoming a key design attribute for building computational systems.
 
@@ -13,15 +13,21 @@ Although it may seem like a recent problem, the energy efficiency of computer sy
 
 From a software perspective, the energy efficiency problem can be tackled at different levels of abstraction, ranging from machine code level to user-facing applications. Traditionally, the research in this area has been focused on low-level software. Much progress has been achieved on building energy-efficient solutions for embedded software~\cite{tiwari:1994}, compilers~\cite{hsu:2003}, operating systems~\cite{merkel:2006} and runtime systems~\cite{ribic:2014, farkas:2000}. However, the growing worldwide movement towards sustainability, including sustainability in software~\cite{becker:2015}, have motivated the study of the energy impact of application software in execution.
 
-Recent empirical studies have provided initial evidence that high-level decisions can effectively reduce the energy usage of an application software~\cite{chung:2001,hindle:2012,pinto:2014,trefethen:2013,manotas:2014,sahin:2014}. It is important to note that optimizing software at the application level does not cancel the lower level optimizations. They are complementary solutions. However, it is still not clear which software engineering practices are beneficial for saving energy. A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved.
+Recent empirical studies have provided initial evidence that high-level decisions can effectively reduce the energy usage of an application software~\cite{hindle:2012,trefethen:2013,pinto:2014,sahin:2014}. A big advantage of this kind of optimization is that they are complementary to the low-level ones, which helps improving the energy efficiency of the system as a whole. Also, it includes the developer in the loop of deciding how to optimize its software for a certain context. As they have the knowledge about the application domain, it can lead to more aggressive optimizations. In contrast, low-level optimizations have to be usually more generic and, consequently, more conservative.
+
+Nevertheless, the programming models used for developement is an important piece of this puzzle when we talk about writing energy-efficient software. A trend that we can identify in modern software development is the employment of concurrency techniques as a way improve the program's performance. The main reason for this is the increasily popularity of multicore processors. Such processors [...]. To leverage this kind of architecture, developer often have to [...]. % concurrent programming is hard
+
+% functional programming as an alternative
+
+In this work, we believe that functional programming can play an important role in helping developer to write correct concurrent programs. Moreover, we think that educating developers and providing the necessary tools for them to write energy-efficient code in this envroiment is crucial for [...].
 
 
 \section{Problem}
-\lipsum[1-2]
+A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved.
 
 
 \section{Goal}
-\lipsum[3-4]
+\lipsum[1-1]
 
 
 \section{Contributions}
