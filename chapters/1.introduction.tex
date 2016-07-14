@@ -25,11 +25,21 @@ In this work, we believe that functional programming can play a major role in he
 
 
 \section{Problem}
-A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved.
+In this work, we tackle two critical problems in the development of energy-efficient concurrent applications. The first one is the \emph{lack of knowledge}. A recent study by~\citeonline{pinto:2014b} shows that, although application developers are consistently more interested in understanding how to reduce energy consumption in their software, there is a general lack of information in the community about how it can be achieved. This is unfortunate because it is very unlikely that developers will be able to build energy-efficient solutions without a logical and systematical way of reasoning about the energy consumption of the software that they write.
+
+The second problem is the \emph{lack of tools}. Currently, there is not much tooling in which developers can rely on to analyze the energy consumption of their programs. Most of the tools available are more close to the systems side than the software side, which makes difficult to establish a relation with the software in execution. This problem is closely related to the previous one as the availability of such tools can lead to a better understanding about software energy consumption in general.
 
 
 \section{Goal}
-\lipsum[1-1]
+The goal of this work is to mitigate both problems aforementioned: the lack of knowledge, and the lack of tools for developing energy-efficient concurrent applications. Moreover, we are interested here in tackling these problems under the functional programming point-of-view, using Haskell as our platform. To achieve this goal, we investigate the following key research questions:
+
+\begin{enumerate}[label=\RQ{\arabic*}.]
+  \item How can we effectively measure the energy consumption of a Haskell application?
+  \item Do alternative concurrent constructs have different impacts on energy consumption?
+  \item How can developers improve the energy efficiency of their concurrent applications?
+\end{enumerate}
+
+To answer \RQ{1}, we studied two performance analysis tools of the Haskell ecosystem in order to understand how they could be extended to measure the energy consumption of a Haskell program. To answer \RQ{2}, we conducted an empirical study aiming to illuminate the relationship between the choices and settings of six concurrent programming constructs available in Haskell and energy consumption. From these six, we have three thread management constructs (\forkIO, \forkOn, and \forkOS) and three primitives for sharing data (\MVar, \TMVar, and \TVar). This study consisted in an extensive experimental space exploration over both microbenchmarks and real-world Haskell programs, which were manually modified to use each of constructs that we described. Finally, to answer \RQ{3}, we elaborated a list of guidelines based on the results of our empirical study for educating developers on how to improve the energy consumption of their applications.
 
 
 \section{Contributions}
@@ -54,3 +64,5 @@ In \textbf{\chapref{chp:tools}}, we show how to measure the energy consumption o
 In \textbf{\chapref{chp:guide}}, we present a list of recommendations for Haskell developers on how to write energy-efficient software. These recommendations are based on the results of our empirical study.
 
 Finally, \textbf{\chapref{chp:related}} discusses previous research related to this work and \textbf{\chapref{chp:conclusion}} present our concluding remarks and discuss where this work might lead.
+
+It is important to point out that the \textbf{\chapref{chp:study}} of this dissertation has been published at the main research track of the \emph{IEEE International Conference on Software Analysis, Evolution, and Reengineering (SANER'16)}. When writing this dissertation, this chapter was extended and revised. A new version of this paper including these extensions and the remainder of this dissertation is under work to be submitted to a software engineering journal.
