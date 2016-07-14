@@ -1,12 +1,19 @@
 \chapter{Related Work}\label{chp:related}
-
-\section{Refactoring}
-\lipsum[1-3]
+In this chapter, we present a short description of the research which has been conducted in areas related to our work.
 
 
 \section{Performance Analysis in Haskell}
-\lipsum[1-3]
 
 
 \section{Software Energy Consumption}
-\lipsum[1-3]
+Studying energy efficiency at the application level is an emerging direction. Traditionally, this problem has been tackled at the lower levels of the computer stack. For example, for building energy-efficient solutions for embedded software~\cite{tiwari:1994}, compilers~\cite{hsu:2003}, operating systems~\cite{merkel:2006}, and runtime systems~\cite{ribic:2014, farkas:2000}. The programming language community has also been active researching this topic through the design of energy-aware programming languages such as Eon~\cite{sorber:2007}, Green~\cite{baek:2010}, EnerJ~\cite{sampson:2011}, and Energy Types~\cite{cohen:2012}. In this kind of approach, the energy behavior information is encoded in the language as a first-class citizen. We take a different route in our work by trying to educate developers on writing energy-efficient software using the tools and languages that they already use.
+
+Several related works study the impact of software changes on energy consumption. \citeonline{hindle:2012} studied the effects of Mozilla Firefox's code evolution on its energy efficiency, showing a consistent reduction in energy usage correlated to performance optimizations. \citeonline{pinto:2014} studied the energy consumption of different thread management primitives in the Java programming language. We took a similar route in assessing the consumption for Haskell's thread management and data sharing constructs. \citeonline{sahin:2014} provide an analysis of the effects of code refactorings on energy consumption for nine Java applications. For six commons refactorings, such as converting local variables to fields, they showed an impact on energy consumption that was difficult to predict. Our work focuses on Haskell programs and the impact of changes regarding concurrent structures used. Those changes could be expressed as refactorings since the compared versions have the same program behavior.
+
+\citeonline{kwon:2013} reduced the energy consumption of mobile apps by offloading part of their computation transparently to programmers. \citeonline{moura:2015} studied the commit messages of 317 real-world non-trivial applications to infer the practices and needs of current application developers. A recurring theme identified in this study is the need for more tools to measure/identify/refactor energy hotspots. \citeonline{bruce:2015} used Genetic Improvement to reduce the energy consumption of applications, reaching up to 25\% reduction. \citeonline{pinto:2016} studied the energy characteristics of 16 thread-safe collections of the Java programming language. All these approaches show the potential for program transformation, in general, and refactorings, in particular, to reduce energy consumption. We explored this potential further in this work by targeting Haskell's concurrency framework.
+
+
+\section{Refactoring}
+\citeonline{murphy-hill:2009} provide an analysis on the use of refactoring. Their study indicates how refactoring is common, even if only executed manually. \citeonline{dig:2011} present some reasons why developers choose to apply program transformations to make their programs concurrent. They studied five open-source Java projects and found four categories of concurrency-related motivations for refactoring: Responsiveness, Throughput, Scalability and Correctness. Their findings show that the majority of the transformations (73.9\%) consisted of modifying existing project elements, instead of creating new ones. Our work shows that modifying existing elements can also lead to energy savings, yet another motivation for refactoring.
+
+Various papers address the problem of refactoring Haskell programs. \citeonline{li:2005} present the Haskell Refactorer infrastructure to support the development of refactoring tools. \citeonline{lee:2011} used a case study to classify 12 types of Haskell refactorings found in real projects, mostly dealing with maintainability. \citeonline{brown:2011} specified and implemented refactorings for introducing parallelism into Haskell programs, considering mainly performance concerns. Just as mentioned previously, our study may influence future Haskell program maintenance as energy efficiency becomes a mainstream concern. We are not aware of previous work analyzing the energy efficiency of Haskell programs, in particular, or purely functional programming languages, in general.
