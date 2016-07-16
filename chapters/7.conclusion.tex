@@ -1,8 +1,11 @@
 \chapter{Conclusion}\label{chp:conclusion}
 
 \section{Contributions}
-\lipsum[1-4]
+In this work, we have shedded light on the energy behavior of concurrent Haskell programs. We have extended two performance analysis tools of the Haskell ecosystem to support energy metrics: the \ac{ghc} profiler and the Criterion microbenchmarking library. The former enables developers to find the energy hot spots of their programs by reporting a breakdown of the energy consumed by each cost centre. The latter enables developers to get a statistically-backed estimation of the energy cost of a certain Haskell code by reporting an statistical analysis based on several executions of this code. We have also conducted an extensive experimental study illuminating the relationship between energy consumption and performance of Haskell's concurrent programming constructs and their settings using microbenchmarks and real-world Haskell programs. From this study, we have produced a list of findings about the energy behaviors of concurrent Haskell programs, which are not always obvious. Finally, we have presented a list of guidelines based on the results of our empirical study for developers to follow in order to write energy-efficient concurrent Haskell programs.
 
+We hope our findings will ease the development of energy-efficient Haskell programs. We also hope that this work motivates other developers and researchers from the functional programming and software engineering communities to engage in exploring the software energy consumption area.
+
+An earlier version of \textbf{\chapref{chp:study}} of this dissertation has been published at the main research track of the \emph{IEEE 23rd International Conference on Software Analysis, Evolution, and Reengineering (SANER'16)}~\cite{lima:2016}. An updated version of this paper including the extensions and the remainder of this dissertation is under work to be submitted to a software engineering journal.
 
 \section{Future Work}
-\lipsum[2-4]
+\lipsum[2-3]
