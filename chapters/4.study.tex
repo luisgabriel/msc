@@ -1,5 +1,5 @@
 \chapter{The Energy Efficiency of Concurrent Haskell}\label{chp:study}
-In this chapter, we present an empirical study evaluating the performance and energy consumption characteristics of three thread management constructs and three data-sharing primitives of Concurrent Haskell. We start by providing a brief overview (\secref{sec:overview}) of the study and state the research questions. \secref{sec:setup} describes the benchmark we developed, the environment and the methodology we used. Sections \ref{sec:results} and \ref{sec:discussion} provides our results. Finally, \secref{sec:threats} list the threats to validity.
+In this chapter, we present an empirical study evaluating the performance and energy consumption characteristics of three thread management constructs and three data-sharing primitives of Concurrent Haskell. We start by providing a brief overview (\secref{sec:overview}) of the study and state the research questions. \secref{sec:setup} describes the benchmark we developed, the environment and the methodology we used. Sections \ref{sec:results}, \ref{sec:fasta}, and \ref{sec:discussion} provides our results. Finally, \secref{sec:threats} list the threats to validity.
 
 \section{Overview}\label{sec:overview}
 Recently, the software engineering community have been showing a keen interest in researching about the development of energy-efficient software. As multicore architectures are the norm nowadays, this interest also extends for energy-efficiency from the perspective of concurrent software running on multicore architectures~\cite{trefethen:2013,ribic:2014, pinto:2014}. However, there is no much traction from the functional programming side yet. This is unfortunate as functional programming languages are seen as a good alternative for making concurrent programming less error-prone. % [REF?]
@@ -142,7 +142,7 @@ In one particular benchmark, \fasta, we had strongly divergent results in terms 
 
 %% XXX: when using forkOS, when there is a lot of capabilities, the energy consumption gets worse more rapidly than the performance
 
-\section{Case study: \fasta}
+\section{Case study: \fasta}\label{sec:fasta}
 This section expands the analysis of the \fasta benchmark as its results has a distinct behavior when comparing to the results of the other benchmarks.
 
 \subsection{How it works}
