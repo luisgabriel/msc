@@ -66,7 +66,7 @@ In this section, we report the results of our experiments with concurrent Haskel
 \newline
 
 \begin{figure*}[tp]
-\caption{Energy and Time charts for \chameneos, \dining, \fasta and \knucleotide}
+\caption{Energy and Time results for Benchmarks 1, 2, 3 and 7}
 \centering
 $
 \begin{array}{ccc}
@@ -89,7 +89,7 @@ $
 \end{figure*}
 
 \begin{figure*}[tp]
-\caption{Energy and Time charts for \mandelbrot, \regex, \spectral and \tsearch}
+\caption{Energy and Time results for Benchmarks 4, 5, 6 and 8}
 \centering
 $
 \begin{array}{ccc}
@@ -112,7 +112,7 @@ $
 \end{figure*}
 
 \begin{figure*}[tp]
-\caption{Energy and Time charts for \warp}
+\caption{Energy and Time results for Benchmark 9}
 \centering
 $
 \begin{array}{c}
@@ -223,7 +223,7 @@ This work focused on the Haskell programming language. It is possible that its r
 It is not possible to generalize the results of this study to other hardware platforms for which Haskell programs can be compiled. Factors such as operating system scheduling policies~\cite{yuan:2003} and processor and interconnect layouts~\cite{solernou:2013} can clearly impact the results. We take a route common in experimental programming language research, by constructing experiments over representative system software and hardware, and the results are empirical by nature. To take a step further, we have re-executed the experiments in additional hardware configurations. The primary goal is to understand the stability and portability of our results. We ran some of the benchmarks on another machine, a 4-core Intel i7-3770 (IvyBridge) with 8 GB of DDR 1600 runing Ubuntu Server 14.04.3 LTS (kernel 3.19.0-25) and GHC 7.10.2. \figref{fig:other-machine-conc} shows the results of \mandelbrot running on this i7 machine. The results show analogous trends in which the curves have similar shapes to the results of \figref{fig:conc_bench2}. The same trend can be observed for the remaining benchmarks.
 
 \begin{figure}[t]
-\caption{Energy and Time charts on Alternative Platform}
+\caption{Energy and Time results on Alternative Platform}
 \centering
 $
 \begin{array}{cc}
