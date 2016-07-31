@@ -53,7 +53,7 @@ map f (x:xs) = f x : map f xs
   \label{code:map}
 \end{listing}
 
-In Haskell, a developer can also extend the built-in primitive types by defining new \emph{abstract data types}. \autoref{code:tree} shows an example defining the \Tree data type and the function \texttt{depth} to calculate the depth of the tree. As this example shows, the parametric polymorphism also works for abstract data types. Here, \Tree has two constructors \texttt{Node} and \texttt{Empty}, where the first one holds three elements: the value of the node, the, left and right sub-trees. Pattern matching can be used to walk through a \Tree as shown in Lines 5 and 6.
+In Haskell, a developer can also extend the built-in primitive types by defining new \emph{abstract data types}. \autoref{code:tree} shows an example defining the \Tree data type and the function \texttt{depth} to calculate the depth of the tree. As this example shows, the parametric polymorphism also works for abstract data types. Here, \Tree has two constructors \texttt{Node} and \texttt{Empty}, where the first one holds three elements: the value of the node, the left, and right sub-trees. Pattern matching can be used to walk through a \Tree as shown in Lines 5 and 6.
 
 \begin{listing}
   \caption{A data type for binary tree and a function to calculate its depth}
