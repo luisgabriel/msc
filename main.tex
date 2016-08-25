@@ -10,8 +10,9 @@
 \usepackage{rotating}
 \usepackage{booktabs}
 \usepackage{pdfpages}
-\usepackage[labelfont=bf,font=small,justification=centering]{caption}
+\usepackage[labelfont=bf,font=footnotesize,justification=centering]{caption}
 \usepackage{lipsum}
+\usepackage{sectsty}
 \usepackage{listings}
 \usepackage[newfloat]{minted}
 \usepackage[htt]{hyphenat} % Allow hyphenation inside \texttt
@@ -21,10 +22,11 @@
 
 %% Change the following pdf author attribute name to your name.
 \usepackage[linkcolor=black,
-            citecolor=blue,
+            citecolor=blue, % XXX: final version should be black
             urlcolor=black,
             colorlinks,
             pdfpagelabels,
+            breaklinks=true,
             pdftitle={M.Sc. Thesis - Luís Gabriel Lima},
             pdfauthor={Luís Gabriel Lima}]{hyperref}
 
@@ -34,6 +36,11 @@
 \captionsetup[table]{position=top,width=.85\textwidth}
 \captionsetup[lstlisting]{position=top,width=.85\textwidth}
 \captionsetup[figure]{position=bottom,width=.85\textwidth}
+
+%% Chapter and (Sub)Section fonts must be same size as text (12)
+\sectionfont{\fontsize{12}{15}\selectfont}
+\subsectionfont{\fontsize{12}{15}\selectfont}
+\subsubsectionfont{\fontsize{12}{15}\selectfont}
 
 \SetupFloatingEnvironment{listing}{name={\lstlistingname}, fileext=lol}
 
