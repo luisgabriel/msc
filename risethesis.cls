@@ -857,10 +857,16 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \fancyhead{\hfill\thepage}
   \renewcommand{\headrulewidth}{0pt}
  }
-% 
+%
 % %% bring the style into effect
- \pagestyle{fancy}
-% 
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{
+  \markboth{
+    \MakeUppercase{#1}
+  }{}
+}
+
+%
 % %% make the quotation appear next to the chapter number
 \renewcommand\chapterheadstartvskip{\vspace*{-5\baselineskip}}
 
