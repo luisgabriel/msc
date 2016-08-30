@@ -513,20 +513,14 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \begin{center}
   \includegraphics[scale=0.65]{cinlogo} \\
   \vfill
-  \begin{center}
-    {\normalsize\bfseries{\MakeUppercase{\@title}}}
-    \vskip1\baselineskip
-    \if\@language0
-        {\normalsize \bfseries{Por}}
-    \else
-        {\normalsize \bfseries{By}}
-    \fi
-    \vskip1\baselineskip
-    \normalsize \textit{\bfseries{\MakeUppercase{\@author}}}
-    \vskip1\baselineskip
-    {{\normalsize \bfseries{\@texttype}}}\\
-  \end{center}
-  \vspace{0.2cm}
+    \begin{center}
+      \Large \@author
+      \vskip4\baselineskip
+      {\large\bfseries{\MakeUppercase{\@title}}}
+      \vskip2\baselineskip
+      {{\large \@texttype}}\\
+    \end{center}
+  \vspace{1.4cm}
   \includegraphics[width=1cm]{ufpelogo} \\
   \if\@language0
     {\fontfamily{times}\selectfont \tiny \@universitypt\\}
@@ -537,7 +531,9 @@ requirements for the degree of \@degree\ in \@majorfielden.
   {\fontfamily{times}\selectfont \tiny \url{www.cin.ufpe.br/~posgraduacao}\\}
   \vskip\baselineskip
   \vskip\baselineskip
-  \@address/\@date
+  \@address
+  \\
+  \@date
   \end{center}
 }
 
